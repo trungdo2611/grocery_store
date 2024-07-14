@@ -1,0 +1,397 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="QLyNongSanModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Blog">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserID" Type="Int32" />
+    <Property Name="Title" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+    <Property Name="Picture" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="Content" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="Create_at" Type="DateTime" Precision="0" />
+    <NavigationProperty Name="UserTable" Relationship="Self.FK__Blog__UserID__37A5467C" FromRole="Blog" ToRole="UserTable" />
+  </EntityType>
+  <EntityType Name="Category">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Alias" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="Picture" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Products" Relationship="Self.FK__Product__Categor__3C69FB99" FromRole="Category" ToRole="Product" />
+  </EntityType>
+  <EntityType Name="Contact">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Email" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="Phone" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="Content" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Create_at" Type="DateTime" Precision="0" />
+  </EntityType>
+  <EntityType Name="OrderDetail">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="OrderID" Type="Int32" />
+    <Property Name="ProductID" Type="Int32" />
+    <Property Name="Price" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="Quantity" Type="Int32" />
+    <Property Name="create_at" Type="DateTime" Precision="0" />
+    <NavigationProperty Name="OrderTable" Relationship="Self.FK__OrderDeta__Order__38996AB5" FromRole="OrderDetail" ToRole="OrderTable" />
+    <NavigationProperty Name="Product" Relationship="Self.FK__OrderDeta__Produ__398D8EEE" FromRole="OrderDetail" ToRole="Product" />
+  </EntityType>
+  <EntityType Name="OrderTable">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserID" Type="Int32" />
+    <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="StransactStatusId" Type="Int32" />
+    <Property Name="Create_at" Type="DateTime" Precision="0" />
+    <NavigationProperty Name="OrderDetails" Relationship="Self.FK__OrderDeta__Order__38996AB5" FromRole="OrderTable" ToRole="OrderDetail" />
+    <NavigationProperty Name="TransActStatu" Relationship="Self.FK__OrderTabl__Stran__3A81B327" FromRole="OrderTable" ToRole="TransActStatus" />
+    <NavigationProperty Name="UserTable" Relationship="Self.FK__OrderTabl__UserI__3B75D760" FromRole="OrderTable" ToRole="UserTable" />
+  </EntityType>
+  <EntityType Name="Product">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CategoryId" Type="Int32" />
+    <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="ShortDesc" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="FullDesc" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Price" Type="Int32" />
+    <Property Name="Cost" Type="Int32" />
+    <Property Name="Picture" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="Alias" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="HomeFlag" Type="Boolean" />
+    <Property Name="BestSeller" Type="Boolean" />
+    <Property Name="UnitStock" Type="Int32" />
+    <Property Name="Create_at" Type="DateTime" Precision="0" />
+    <Property Name="Update_at" Type="DateTime" Precision="0" />
+    <Property Name="supplierId" Type="Int32" />
+    <NavigationProperty Name="Category" Relationship="Self.FK__Product__Categor__3C69FB99" FromRole="Product" ToRole="Category" />
+    <NavigationProperty Name="OrderDetails" Relationship="Self.FK__OrderDeta__Produ__398D8EEE" FromRole="Product" ToRole="OrderDetail" />
+    <NavigationProperty Name="Supplier" Relationship="Self.FK__Product__supplie__440B1D61" FromRole="Product" ToRole="Supplier" />
+    <NavigationProperty Name="Reviews" Relationship="Self.FK__Review__ProductI__3D5E1FD2" FromRole="Product" ToRole="Review" />
+    <NavigationProperty Name="WishLists" Relationship="Self.FK__WishList__Produc__403A8C7D" FromRole="Product" ToRole="WishList" />
+  </EntityType>
+  <EntityType Name="Review">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserID" Type="Int32" />
+    <Property Name="ProductID" Type="Int32" />
+    <Property Name="Rating" Type="Int32" />
+    <Property Name="Comment" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Create_at" Type="DateTime" Precision="0" />
+    <NavigationProperty Name="Product" Relationship="Self.FK__Review__ProductI__3D5E1FD2" FromRole="Review" ToRole="Product" />
+    <NavigationProperty Name="UserTable" Relationship="Self.FK__Review__UserID__3E52440B" FromRole="Review" ToRole="UserTable" />
+  </EntityType>
+  <EntityType Name="Role">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="UserTables" Relationship="Self.FK__UserTable__RoleI__3F466844" FromRole="Role" ToRole="UserTable" />
+  </EntityType>
+  <EntityType Name="Supplier">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="400" FixedLength="false" Unicode="true" />
+    <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Phone" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Products" Relationship="Self.FK__Product__supplie__440B1D61" FromRole="Supplier" ToRole="Product" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="TransActStatu">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Status" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="OrderTables" Relationship="Self.FK__OrderTabl__Stran__3A81B327" FromRole="TransActStatus" ToRole="OrderTable" />
+  </EntityType>
+  <EntityType Name="UserTable">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="PassWord" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="RoleID" Type="Int32" />
+    <Property Name="Active" Type="Boolean" />
+    <Property Name="FullName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="avatar" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="Email" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="Phone" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="Address" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="Created_at" Type="DateTime" Precision="0" />
+    <Property Name="update_at" Type="DateTime" Precision="0" />
+    <NavigationProperty Name="Blogs" Relationship="Self.FK__Blog__UserID__37A5467C" FromRole="UserTable" ToRole="Blog" />
+    <NavigationProperty Name="OrderTables" Relationship="Self.FK__OrderTabl__UserI__3B75D760" FromRole="UserTable" ToRole="OrderTable" />
+    <NavigationProperty Name="Reviews" Relationship="Self.FK__Review__UserID__3E52440B" FromRole="UserTable" ToRole="Review" />
+    <NavigationProperty Name="Role" Relationship="Self.FK__UserTable__RoleI__3F466844" FromRole="UserTable" ToRole="Role" />
+    <NavigationProperty Name="WishLists" Relationship="Self.FK__WishList__UserID__412EB0B6" FromRole="UserTable" ToRole="WishList" />
+  </EntityType>
+  <EntityType Name="WishList">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserID" Type="Int32" />
+    <Property Name="ProductID" Type="Int32" />
+    <NavigationProperty Name="Product" Relationship="Self.FK__WishList__Produc__403A8C7D" FromRole="WishList" ToRole="Product" />
+    <NavigationProperty Name="UserTable" Relationship="Self.FK__WishList__UserID__412EB0B6" FromRole="WishList" ToRole="UserTable" />
+  </EntityType>
+  <Association Name="FK__Blog__UserID__37A5467C">
+    <End Role="UserTable" Type="Self.UserTable" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Blog" Type="Self.Blog" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserTable">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Blog">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Product__Categor__3C69FB99">
+    <End Role="Category" Type="Self.Category" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Product" Type="Self.Product" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Category">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Product">
+        <PropertyRef Name="CategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__OrderDeta__Order__38996AB5">
+    <End Role="OrderTable" Type="Self.OrderTable" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="OrderDetail" Type="Self.OrderDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="OrderTable">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="OrderDetail">
+        <PropertyRef Name="OrderID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__OrderDeta__Produ__398D8EEE">
+    <End Role="Product" Type="Self.Product" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="OrderDetail" Type="Self.OrderDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Product">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="OrderDetail">
+        <PropertyRef Name="ProductID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__OrderTabl__Stran__3A81B327">
+    <End Role="TransActStatus" Type="Self.TransActStatu" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="OrderTable" Type="Self.OrderTable" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TransActStatus">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="OrderTable">
+        <PropertyRef Name="StransactStatusId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__OrderTabl__UserI__3B75D760">
+    <End Role="UserTable" Type="Self.UserTable" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="OrderTable" Type="Self.OrderTable" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserTable">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="OrderTable">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Product__supplie__440B1D61">
+    <End Role="Supplier" Type="Self.Supplier" Multiplicity="0..1" />
+    <End Role="Product" Type="Self.Product" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Supplier">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Product">
+        <PropertyRef Name="supplierId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Review__ProductI__3D5E1FD2">
+    <End Role="Product" Type="Self.Product" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Review" Type="Self.Review" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Product">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Review">
+        <PropertyRef Name="ProductID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__WishList__Produc__403A8C7D">
+    <End Role="Product" Type="Self.Product" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="WishList" Type="Self.WishList" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Product">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="WishList">
+        <PropertyRef Name="ProductID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Review__UserID__3E52440B">
+    <End Role="UserTable" Type="Self.UserTable" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Review" Type="Self.Review" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserTable">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Review">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__UserTable__RoleI__3F466844">
+    <End Role="Role" Type="Self.Role" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="UserTable" Type="Self.UserTable" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Role">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="UserTable">
+        <PropertyRef Name="RoleID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__WishList__UserID__412EB0B6">
+    <End Role="UserTable" Type="Self.UserTable" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="WishList" Type="Self.WishList" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserTable">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="WishList">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="QLyNongSanEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Blogs" EntityType="Self.Blog" />
+    <EntitySet Name="Categories" EntityType="Self.Category" />
+    <EntitySet Name="Contacts" EntityType="Self.Contact" />
+    <EntitySet Name="OrderDetails" EntityType="Self.OrderDetail" />
+    <EntitySet Name="OrderTables" EntityType="Self.OrderTable" />
+    <EntitySet Name="Products" EntityType="Self.Product" />
+    <EntitySet Name="Reviews" EntityType="Self.Review" />
+    <EntitySet Name="Roles" EntityType="Self.Role" />
+    <EntitySet Name="Suppliers" EntityType="Self.Supplier" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+    <EntitySet Name="TransActStatus" EntityType="Self.TransActStatu" />
+    <EntitySet Name="UserTables" EntityType="Self.UserTable" />
+    <EntitySet Name="WishLists" EntityType="Self.WishList" />
+    <AssociationSet Name="FK__Blog__UserID__37A5467C" Association="Self.FK__Blog__UserID__37A5467C">
+      <End Role="UserTable" EntitySet="UserTables" />
+      <End Role="Blog" EntitySet="Blogs" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Product__Categor__3C69FB99" Association="Self.FK__Product__Categor__3C69FB99">
+      <End Role="Category" EntitySet="Categories" />
+      <End Role="Product" EntitySet="Products" />
+    </AssociationSet>
+    <AssociationSet Name="FK__OrderDeta__Order__38996AB5" Association="Self.FK__OrderDeta__Order__38996AB5">
+      <End Role="OrderTable" EntitySet="OrderTables" />
+      <End Role="OrderDetail" EntitySet="OrderDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK__OrderDeta__Produ__398D8EEE" Association="Self.FK__OrderDeta__Produ__398D8EEE">
+      <End Role="Product" EntitySet="Products" />
+      <End Role="OrderDetail" EntitySet="OrderDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK__OrderTabl__Stran__3A81B327" Association="Self.FK__OrderTabl__Stran__3A81B327">
+      <End Role="TransActStatus" EntitySet="TransActStatus" />
+      <End Role="OrderTable" EntitySet="OrderTables" />
+    </AssociationSet>
+    <AssociationSet Name="FK__OrderTabl__UserI__3B75D760" Association="Self.FK__OrderTabl__UserI__3B75D760">
+      <End Role="UserTable" EntitySet="UserTables" />
+      <End Role="OrderTable" EntitySet="OrderTables" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Product__supplie__440B1D61" Association="Self.FK__Product__supplie__440B1D61">
+      <End Role="Supplier" EntitySet="Suppliers" />
+      <End Role="Product" EntitySet="Products" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Review__ProductI__3D5E1FD2" Association="Self.FK__Review__ProductI__3D5E1FD2">
+      <End Role="Product" EntitySet="Products" />
+      <End Role="Review" EntitySet="Reviews" />
+    </AssociationSet>
+    <AssociationSet Name="FK__WishList__Produc__403A8C7D" Association="Self.FK__WishList__Produc__403A8C7D">
+      <End Role="Product" EntitySet="Products" />
+      <End Role="WishList" EntitySet="WishLists" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Review__UserID__3E52440B" Association="Self.FK__Review__UserID__3E52440B">
+      <End Role="UserTable" EntitySet="UserTables" />
+      <End Role="Review" EntitySet="Reviews" />
+    </AssociationSet>
+    <AssociationSet Name="FK__UserTable__RoleI__3F466844" Association="Self.FK__UserTable__RoleI__3F466844">
+      <End Role="Role" EntitySet="Roles" />
+      <End Role="UserTable" EntitySet="UserTables" />
+    </AssociationSet>
+    <AssociationSet Name="FK__WishList__UserID__412EB0B6" Association="Self.FK__WishList__UserID__412EB0B6">
+      <End Role="UserTable" EntitySet="UserTables" />
+      <End Role="WishList" EntitySet="WishLists" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

@@ -1,0 +1,153 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+@model PagedList.IPagedList<WebQLyNongSan.Models.OrderManageViewModel>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    WebQLyNongSan.Models.QLyNongSanEntities2 db = new WebQLyNongSan.Models.QLyNongSanEntities2();
+}
+
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+
+<div class="tool">
+    <div class="heading">
+
+        <form action="~/Admin/Order/Index" method="get" class="search">
+            <label>
+                <input id="search-input" name="searchString" value="@ViewBag.currentFilter" type="text" placeholder="Search here">
+                <button id="btnSearch" type="submit"> <i class="fa-solid fa-magnifying-glass"></i></button>
+            </label>
+        </form>
+    </div>
+</div>
+
+<div class="details">
+    <div class="tableData">
+        <div class="cardHeader form-index">
+            <h2>Danh sách đơn hàng</h2>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <td style="width: 10rem;">Code đơn hàng</td>
+                    <td>Tên người mua</td>
+                    <td>Phương thức thanh toán</td>
+                    <td>Thành tiền</td>
+                    <td>Ngày đặt</td>
+                    <td style="width: 14rem;">Trạng thái</td>
+                    <td>Hành động</td>
+                </tr>
+            </thead>
+            @if (Model.Any())
+            {
+                <tbody class="tbody">
+                    @foreach (var item in Model)
+                    {
+                        var loaivc = db.TransActStatus.FirstOrDefault(x => x.id == item.orders.StransactStatusId);
+                        <tr>
+                            <td>
+                                @item.orders.Code
+                            </td>
+                            <td>
+                                @item.orders.FullName
+                            </td>
+                            @if (item.orders.PaymentType == 1)
+                            {
+                                <td>
+                                    COD
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    Thanh toán Online
+                                </td>
+                            }
+
+                        <td>
+                            @string.Format("{0:#,0}", item.orders.TotalAmount)
+                        </td>
+                            <td>
+                                @string.Format("{0:dd-MM-yyyy}", item.orders.Create_at)
+                            </td>
+                            <td>
+                                @if (item.orders.StransactStatusId == 1)
+                                {
+                                    <span class="status pending">@loaivc.Status</span>
+                                }
+                                else if (item.orders.StransactStatusId == 2)
+
+                                {
+                                    <span class="status inProgress">@loaivc.Status</span>
+                                }
+                                else if (item.orders.StransactStatusId == 3)
+                                {
+                                    <span class="status delivered">@loaivc.Status</span>
+                                }
+                                else
+                                {
+                                    <span class="status return">@loaivc.Status</span>
+                                }
+
+                            </td>
+                            <td>
+                                <a title="Xem" href="/Admin/Order/Details/@item.orders.id"><i class="fa-solid fa-eye icons"></i></a>
+                                <a title="Chỉnh sửa" href="/Admin/Order/Edit/@item.orders.id"><i class="fa-solid fa-pencil icons"></i></a>
+                                <a id="delete-link" title="Xóa" href="/Admin/Order/Delete/@item.orders.id" onclick="showDelete1(event,'@item.orders.Code')"><i class="fa-solid fa-trash icons"></i></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            }
+            else
+            {
+                <tr>
+                    <td class="p_Search" colspan="8">Không tìm thấy kết quả theo từ khóa "@Html.Raw(ViewBag.currentFilter)"</td>
+                </tr>
+            }
+
+        </table>
+    </div>
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, currentFilter = ViewBag.CurrentFilter }))
+</div>
+
+@section scripts {
+    @if (!string.IsNullOrEmpty(ViewBag.successEdit))
+    {
+        <script>
+        showSuccessCreate('cập nhật', '@ViewBag.successEdit');
+        </script>
+    }
+    <script>
+        function showDelete1(e, str) {
+            e.preventDefault();
+            var deleteUrl = $("#delete-link").attr("href");
+            swal({
+                title: "Xác nhận xóa ?",
+                text: `Bạn chắc chắn muốn xóa ${str} không ?`,
+                icon: "warning",
+                buttons: {
+                    cancel: {
+                        text: "Không",
+                        value: null,
+                        visible: true,
+                        className: "",
+                        closeModal: true,
+                    },
+                    confirm: {
+                        text: "Có",
+                        value: true,
+                        visible: true,
+                        className: "",
+                        closeModal: true
+                    }
+                }
+            }).then((willDelete) => {
+                if (willDelete) {
+                    window.location.href = deleteUrl;
+                }
+            });
+        }
+    </script>
+}

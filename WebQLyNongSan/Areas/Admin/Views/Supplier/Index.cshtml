@@ -1,0 +1,267 @@
+﻿
+@model WebQLyNongSan.Models.Supplier
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<!-- Heading -->
+<div class="tool">
+    <div class="heading">
+
+        <form action="~/Admin/Supplier/GetData" class="search">
+            <label>
+                <input id="search-input" type="text" placeholder="Search here">
+                <button id="btnSearch" type="submit"> <i class="fa-solid fa-magnifying-glass"></i></button>
+            </label>
+        </form>
+        <button href="" class="btnAdd">
+            <i class="fa-solid fa-plus"></i>
+            Thêm
+
+        </button>
+    </div>
+</div>
+
+<!-- ================ Order Details List ================= -->
+<div class="details">
+    <div class="tableData">
+        <div class="cardHeader form-index">
+            <h2>Danh sách nhà sản xuất</h2>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <td>Nhà sản xuất</td>
+                    <td>Địa chỉ</td>
+                    <td>SĐT</td>
+                    <td>Hành động</td>
+
+                </tr>
+            </thead>
+            <tbody class="tbody"></tbody>
+        </table>
+    </div>
+    <div id="pagination">
+    </div>
+
+</div>
+
+
+<div class="modal js-modal">
+    <form action="~/Admin/Supplier/Create" method="post" class="form js-form animate" id="form-1" enctype="multipart/form-data">
+        <div class="modal-close js-modal-close">
+            <i class="fa-regular fa-circle-xmark"></i>
+        </div>
+        <h3 class="heading">Thêm Nhà sản xuất</h3>
+
+        <div class="spacer"></div>
+
+        <div class="form-group">
+            <label for="Name" class="form-label">Tên nhà sản xuất</label>
+            <input id="Name" name="Name" type="text" placeholder="VD: Nhà cô tư" class="form-control">
+            <span class="form-message"><label class="error" for="Name"></label></span>
+        </div>
+
+        <div class="form-group">
+            <label for="Address" class="form-label">Địa chỉ</label>
+            <input id="Address" name="Address" type="text" placeholder="VD: Bình Thuận" class="form-control">
+            <span class="form-message"><label class="error" for="Address"></label></span>
+        </div>
+
+
+        <div class="form-group">
+            <label for="Phone" class="form-label">Số điện thoại</label>
+            <input id="Phone" name="Phone" type="number" placeholder="VD: 031234567" class="form-control">
+            <span class="form-message"><label class="error" for="Phone"></label></span>
+        </div>
+
+        <button type="submit" id="addCategoryButton" class="form-submit">Thêm</button>
+    </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+@section scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            loadData("", null, 4);
+
+            //Hàm tìm kiếm
+            $(".search").submit(function (e) {
+                e.preventDefault();
+                // Lấy từ khóa tìm kiếm từ input
+                var searchString = $("#search-input").val();
+                // Thực hiện tìm kiếm bằng AJAX
+                loadData(searchString, null, 4);
+            });
+
+
+            //Chặn hành động submit mặc định
+            $("#form-1").on("submit", function (e) {
+                e.preventDefault();
+            });
+
+            //Setting validation
+            $('#form-1').validate({
+                rules: {
+                    Name: {
+                        required: true,
+                        minlength: 3
+                    },
+                    Address: "required",
+                    Phone: {
+                        required: true,
+                        maxlength: 10,
+                        minlength: 10
+                    }
+                },
+                messages: {
+                    Name: {
+                        required: "Bạn phải nhập tên",
+                        minlength: "Tên phải có độ dài tối thiểu 3 ký tự"
+                    },
+                    Address: "Bạn phải nhập địa chỉ",
+                    Phone: {
+                        required: "Bạn phải nhập số điện thoại",
+                        maxlength: "Số điện thoại có độ dài tối đa 10 ký tự",
+                        minlength: "Số điện thoại có độ dài là 10 ký tự"
+                    }
+                }
+            });
+            //Thực hiện hành động kiểm tra validate và thêm mới
+            $("#addCategoryButton").on("click", function () {
+                if ($('#form-1').valid()) {
+                    jQueryAjaxCreate(document.getElementById("form-1"));
+                } else {
+                    $("#form-1").submit();
+                }
+            });
+
+        });
+
+
+
+
+
+        //Hàm load data
+        function loadData(_searchString, page, pageSize) {
+            $.ajax({
+                async: true,
+                url: '/Supplier/GetData',
+                data: {
+                    searchString: _searchString,
+                    page: page,
+                    pageSize: pageSize,
+                },
+                contentType: 'application/json;charset=utf-8',
+                datatype: 'JSON',
+                success: function (response) {
+                    if (response.total > 0) {
+                        var data = response.datas;
+                        var html = '';
+                        $.each(data, function (key, value) {
+                            html += '<tr>';
+                            html += '<td>' + value.Name + '</td>';
+                            html += '<td>' + value.Address + '</td>';
+                            html += '<td>' + value.Phone + '</td>';
+                            html += ' <td><a title="Xem" href="/Admin/Supplier/Details/' + value.id + '"><i class="fa-solid fa-eye icons"></i></a>'
+                            html += '<a title="Sửa" href="/Admin/Supplier/Edit/' + value.id + '"><i class="fa-solid fa-pencil icons"></i></a>'
+                            html += '<a  id="delete-link" title="Xóa" href="/Admin/Supplier/Delete/' + value.id + '" onclick = "showDelete(event,\'' + value.Name + '\')" ><i class="fa-solid fa-trash icons"></i></a> </td>'
+                            html += '</tr>';
+                        });
+                        $('.tbody').html(html);
+                        Pagination(response.currrentPage, response.NumberPage, response.PageSize);
+                    } else {
+                        html = `<tr><td class="p_Search" colspan="8">Không tìm thấy kết quả theo từ khóa "${_searchString}"</td></tr>`
+                        $('.tbody').html(html);
+                    }
+                },
+
+                error: function () {
+                    alert('lỗi hiển thị danh mục');
+                }
+            });
+        }
+
+        //Hàm phân trang
+        function Pagination(currentPage, NumberPage, pageSize) {
+            if (NumberPage > 0) {
+                var str = `<nav aria-label="Page navigation example"> <ul class="pagination">`;
+                if (currentPage != 1) {
+                    str += `<li class="page-item"><a class="page-link" onclick="NextPage(${currentPage - 1},${pageSize})" href="javascript:void(0);">Trước</a></li>`;
+                }
+
+                for (let i = 1; i <= NumberPage; i++) {
+                    if (currentPage === i) {
+                        str += `<li class="page-item active1"><a class="page-link" href="javascript:void(0);">${i}</a></li>`;
+                    } else {
+                        str += `<li class="page-item"><a class="page-link" onclick="NextPage(${i},${pageSize})" href="javascript:void(0);">${i}</a></li>`;
+                    }
+
+                }
+                if (currentPage != NumberPage) {
+                    str += `<li class="page-item"><a class="page-link" onclick="NextPage(${currentPage + 1},${pageSize})" href="javascript:void(0);">Sau</a></li>`;
+                }
+                str += "</ul></nav>";
+                $('#pagination').html(str);
+            }
+
+        }
+
+        function NextPage(page, pageSize) {
+            var searchString = $("#search-input").val();
+            loadData(searchString, page, pageSize);
+        }
+
+
+        //Hàm thêm mới
+        function jQueryAjaxCreate(form) {
+
+            if ($(form).valid()) {
+                var ajaxCofig = {
+                    type: 'POST',
+                    url: form.action,
+                    data: new FormData(form),
+                    contentType: false,
+                    processData: false,
+                    success: function (response) {
+                        if (response == "success") {
+                            showSuccessCreate('thêm', 'nhà sản xuất');
+                            loadData('', null, 4);
+                            resetForm(form);
+                        }
+
+                    },
+                    error: function (error) {
+                        showErrorCreate();
+                    }
+                }
+                if ($(form).attr('enctype') == "multipart/form-data") {
+                    ajaxCofig["contentType"] = false;
+                    ajaxCofig["processData"] = false;
+
+                }
+                $.ajax(ajaxCofig)
+            }
+        }
+
+    </script>
+    @if (!string.IsNullOrEmpty(ViewBag.SuccessMessage))
+    {
+        <script>
+
+          //Hiển thị thông báo bằng JavaScript
+         showSuccessCreate('cập nhật', '@ViewBag.SuccessMessage');
+
+        </script>
+    }
+
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+}

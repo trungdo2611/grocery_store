@@ -1,0 +1,624 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" />
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A4F57AC2-9DA8-46F5-B34D-6B404D860D19}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WebQLyNongSan</RootNamespace>
+    <AssemblyName>WebQLyNongSan</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>true</UseIISExpress>
+    <Use64BitIISExpress />
+    <IISExpressSSLPort>44307</IISExpressSSLPort>
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+    </Reference>
+    <Reference Include="PagedList.Mvc, Version=4.5.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=2.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.2.0.1\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+    </Reference>
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.9.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.9\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.9\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease">
+      <Private>True</Private>
+      <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="Antlr3.Runtime">
+      <Private>True</Private>
+      <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\AuthController.cs" />
+    <Compile Include="Areas\Admin\Controllers\BaseController.cs" />
+    <Compile Include="Areas\Admin\Controllers\BlogController.cs" />
+    <Compile Include="Areas\Admin\Controllers\CategoryController.cs" />
+    <Compile Include="Areas\Admin\Controllers\ContactController.cs" />
+    <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
+    <Compile Include="Areas\Admin\Controllers\OrderController.cs" />
+    <Compile Include="Areas\Admin\Controllers\ProductController.cs" />
+    <Compile Include="Areas\Admin\Controllers\StatisticalController.cs" />
+    <Compile Include="Areas\Admin\Controllers\SupplierController.cs" />
+    <Compile Include="Areas\Admin\Controllers\UserController.cs" />
+    <Compile Include="Controllers\AboutController.cs" />
+    <Compile Include="Controllers\AuthController.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\BlogController.cs" />
+    <Compile Include="Controllers\ContactController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ReviewController.cs" />
+    <Compile Include="Controllers\ShopController.cs" />
+    <Compile Include="Controllers\ShoppingCartController.cs" />
+    <Compile Include="Controllers\WishlistController.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Blog.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\BlogAdminViewModel.cs" />
+    <Compile Include="Models\BlogViewModel.cs" />
+    <Compile Include="Models\Category.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CateProductViewModel.cs" />
+    <Compile Include="Models\ChangePasswordViewModel.cs" />
+    <Compile Include="Models\Common.cs" />
+    <Compile Include="Models\Contact.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Model1.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model1.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Model1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Model1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model1.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\OrderDetail.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\OrderManageViewModel.cs" />
+    <Compile Include="Models\OrderTable.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\OrderViewModel.cs" />
+    <Compile Include="Models\PaymentOnline\VnPayLibrary.cs" />
+    <Compile Include="Models\Product.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ProductDetailViewModel.cs" />
+    <Compile Include="Models\ProductViewModel.cs" />
+    <Compile Include="Models\Review.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ReviewViewModel.cs" />
+    <Compile Include="Models\Role.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ShoppingCart.cs" />
+    <Compile Include="Models\ShopProductViewModel.cs" />
+    <Compile Include="Models\ShopViewModel1.cs" />
+    <Compile Include="Models\Supplier.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SuppProductViewModel.cs" />
+    <Compile Include="Models\sysdiagram.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TransActStatu.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\UserTable.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\UserViewModel.cs" />
+    <Compile Include="Models\WishList.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\WishlistViewModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Admin\assets\css\jqpagination.css" />
+    <Content Include="Areas\Admin\assets\css\style.css" />
+    <Content Include="Areas\Admin\assets\css\toast.css" />
+    <Content Include="Areas\Admin\assets\imgs\customer01.jpg" />
+    <Content Include="Areas\Admin\assets\imgs\customer02.jpg" />
+    <Content Include="Areas\Admin\assets\imgs\logo.svg" />
+    <Content Include="Areas\Admin\assets\js\main.js" />
+    <Content Include="Areas\Admin\Image\avatar3.jpg" />
+    <Content Include="Areas\Admin\Image\imagePreview.jpg" />
+    <Content Include="assets\css\grid.css" />
+    <Content Include="assets\css\style.css" />
+    <Content Include="assets\css\toast.css" />
+    <Content Include="assets\img\a7f10db93f6ede30877f.jpg" />
+    <Content Include="assets\img\about-1.jpg" />
+    <Content Include="assets\img\about-2.jpg" />
+    <Content Include="assets\img\avatar1.jpg" />
+    <Content Include="assets\img\avatar2.jpg" />
+    <Content Include="assets\img\avatar3.jpg" />
+    <Content Include="assets\img\banner-1.jpg" />
+    <Content Include="assets\img\banner-2.jpg" />
+    <Content Include="assets\img\banner-3.jpg" />
+    <Content Include="assets\img\bg-heading-2.jpg" />
+    <Content Include="assets\img\bg-heading.jpg" />
+    <Content Include="assets\img\blog-1.jpg" />
+    <Content Include="assets\img\blog-2.jpg" />
+    <Content Include="assets\img\blog-3.png" />
+    <Content Include="assets\img\blog-4.jpg" />
+    <Content Include="assets\img\blog-5.jpg" />
+    <Content Include="assets\img\blog-6.jpg" />
+    <Content Include="assets\img\category-1.jpg" />
+    <Content Include="assets\img\category-2.jpg" />
+    <Content Include="assets\img\category-3.jpg" />
+    <Content Include="assets\img\category-4.jpg" />
+    <Content Include="assets\img\category-5.jpg" />
+    <Content Include="assets\img\checked-removebg-preview.png" />
+    <Content Include="assets\img\gallery-1.jpg" />
+    <Content Include="assets\img\gallery-2.jpg" />
+    <Content Include="assets\img\gallery-3.jpg" />
+    <Content Include="assets\img\galley-4.jpg" />
+    <Content Include="assets\img\HiepPham.jpg" />
+    <Content Include="assets\img\home-image-1-removebg-preview.png" />
+    <Content Include="assets\img\home-image-2-removebg-preview.png" />
+    <Content Include="assets\img\home-image-3-removebg-preview.png" />
+    <Content Include="assets\img\home-slide.jpg" />
+    <Content Include="assets\img\icon-1.png" />
+    <Content Include="assets\img\icon-2.png" />
+    <Content Include="assets\img\icon-3.jpg" />
+    <Content Include="assets\img\logo Trung 1.svg" />
+    <Content Include="assets\img\logo Trung hong.svg" />
+    <Content Include="assets\img\logo.svg" />
+    <Content Include="assets\img\payment.jpg" />
+    <Content Include="assets\img\product-1.png" />
+    <Content Include="assets\img\TanCao.jpg" />
+    <Content Include="assets\img\thit.jpg" />
+    <Content Include="assets\img\TrungDo.jpg" />
+    <Content Include="assets\img\TruongLe.jpg" />
+    <Content Include="assets\img\TuLe.jpg" />
+    <Content Include="assets\js\js.js" />
+    <Content Include="Content\bootstrap-theme.css" />
+    <Content Include="Content\bootstrap-theme.min.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\PagedList.css" />
+    <Content Include="Content\send1.html" />
+    <Content Include="Content\send2.html" />
+    <Content Include="favicon.ico" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Global.asax" />
+    <Content Include="Content\Site.css" />
+    <Content Include="Models\Model1.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Model1.edmx</DependentUpon>
+      <LastGenOutput>Model1.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\Model1.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Model1.edmx</DependentUpon>
+      <LastGenOutput>Model1.cs</LastGenOutput>
+    </Content>
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Areas\Admin\Views\web.config" />
+    <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\Admin\Views\Home\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Category\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Category\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Category\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\Supplier\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Product\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Product\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Supplier\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\Product\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\User\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Supplier\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\User\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\User\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\Contact\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Contact\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Contact\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\Auth\Login.cshtml" />
+    <Content Include="Areas\Admin\Views\Blog\Index.cshtml" />
+    <EntityDeploy Include="Models\Model1.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Model1.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\Model1.edmx.diagram">
+      <DependentUpon>Model1.edmx</DependentUpon>
+    </Content>
+    <Content Include="Areas\Admin\Views\Blog\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Blog\Details.cshtml" />
+    <Content Include="assets\css\style.css.map" />
+    <Content Include="assets\css\style.scss" />
+    <Content Include="Areas\Admin\Views\Statistical\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Order\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Order\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\Order\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Statistical\TonKho.cshtml" />
+    <Content Include="Areas\Admin\Views\Home\partialIndex.cshtml" />
+    <None Include="Scripts\jquery-3.4.1.intellisense.js" />
+    <Content Include="Scripts\chart.js\Chart.bundle.js" />
+    <Content Include="Scripts\chart.js\Chart.bundle.min.js" />
+    <Content Include="Scripts\chart.js\Chart.css" />
+    <Content Include="Scripts\chart.js\Chart.js" />
+    <Content Include="Scripts\chart.js\Chart.min.css" />
+    <Content Include="Scripts\chart.js\Chart.min.js" />
+    <Content Include="Scripts\customer.js" />
+    <Content Include="Scripts\jquery-3.4.1.js" />
+    <Content Include="Scripts\jquery-3.4.1.min.js" />
+    <Content Include="Scripts\jquery-3.4.1.slim.js" />
+    <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.twbsPagination.min.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\moment\locales.js" />
+    <Content Include="Scripts\moment\locales.min.js" />
+    <Content Include="Scripts\moment\locale\af.js" />
+    <Content Include="Scripts\moment\locale\ar-dz.js" />
+    <Content Include="Scripts\moment\locale\ar-kw.js" />
+    <Content Include="Scripts\moment\locale\ar-ly.js" />
+    <Content Include="Scripts\moment\locale\ar-ma.js" />
+    <Content Include="Scripts\moment\locale\ar-sa.js" />
+    <Content Include="Scripts\moment\locale\ar-tn.js" />
+    <Content Include="Scripts\moment\locale\ar.js" />
+    <Content Include="Scripts\moment\locale\az.js" />
+    <Content Include="Scripts\moment\locale\be.js" />
+    <Content Include="Scripts\moment\locale\bg.js" />
+    <Content Include="Scripts\moment\locale\bm.js" />
+    <Content Include="Scripts\moment\locale\bn-bd.js" />
+    <Content Include="Scripts\moment\locale\bn.js" />
+    <Content Include="Scripts\moment\locale\bo.js" />
+    <Content Include="Scripts\moment\locale\br.js" />
+    <Content Include="Scripts\moment\locale\bs.js" />
+    <Content Include="Scripts\moment\locale\ca.js" />
+    <Content Include="Scripts\moment\locale\cs.js" />
+    <Content Include="Scripts\moment\locale\cv.js" />
+    <Content Include="Scripts\moment\locale\cy.js" />
+    <Content Include="Scripts\moment\locale\da.js" />
+    <Content Include="Scripts\moment\locale\de-at.js" />
+    <Content Include="Scripts\moment\locale\de-ch.js" />
+    <Content Include="Scripts\moment\locale\de.js" />
+    <Content Include="Scripts\moment\locale\dv.js" />
+    <Content Include="Scripts\moment\locale\el.js" />
+    <Content Include="Scripts\moment\locale\en-au.js" />
+    <Content Include="Scripts\moment\locale\en-ca.js" />
+    <Content Include="Scripts\moment\locale\en-gb.js" />
+    <Content Include="Scripts\moment\locale\en-ie.js" />
+    <Content Include="Scripts\moment\locale\en-il.js" />
+    <Content Include="Scripts\moment\locale\en-in.js" />
+    <Content Include="Scripts\moment\locale\en-nz.js" />
+    <Content Include="Scripts\moment\locale\en-SG.js" />
+    <Content Include="Scripts\moment\locale\eo.js" />
+    <Content Include="Scripts\moment\locale\es-do.js" />
+    <Content Include="Scripts\moment\locale\es-mx.js" />
+    <Content Include="Scripts\moment\locale\es-us.js" />
+    <Content Include="Scripts\moment\locale\es.js" />
+    <Content Include="Scripts\moment\locale\et.js" />
+    <Content Include="Scripts\moment\locale\eu.js" />
+    <Content Include="Scripts\moment\locale\fa.js" />
+    <Content Include="Scripts\moment\locale\fi.js" />
+    <Content Include="Scripts\moment\locale\fil.js" />
+    <Content Include="Scripts\moment\locale\fo.js" />
+    <Content Include="Scripts\moment\locale\fr-ca.js" />
+    <Content Include="Scripts\moment\locale\fr-ch.js" />
+    <Content Include="Scripts\moment\locale\fr.js" />
+    <Content Include="Scripts\moment\locale\fy.js" />
+    <Content Include="Scripts\moment\locale\ga.js" />
+    <Content Include="Scripts\moment\locale\gd.js" />
+    <Content Include="Scripts\moment\locale\gl.js" />
+    <Content Include="Scripts\moment\locale\gom-deva.js" />
+    <Content Include="Scripts\moment\locale\gom-latn.js" />
+    <Content Include="Scripts\moment\locale\gu.js" />
+    <Content Include="Scripts\moment\locale\he.js" />
+    <Content Include="Scripts\moment\locale\hi.js" />
+    <Content Include="Scripts\moment\locale\hr.js" />
+    <Content Include="Scripts\moment\locale\hu.js" />
+    <Content Include="Scripts\moment\locale\hy-am.js" />
+    <Content Include="Scripts\moment\locale\id.js" />
+    <Content Include="Scripts\moment\locale\is.js" />
+    <Content Include="Scripts\moment\locale\it-ch.js" />
+    <Content Include="Scripts\moment\locale\it.js" />
+    <Content Include="Scripts\moment\locale\ja.js" />
+    <Content Include="Scripts\moment\locale\jv.js" />
+    <Content Include="Scripts\moment\locale\ka.js" />
+    <Content Include="Scripts\moment\locale\kk.js" />
+    <Content Include="Scripts\moment\locale\km.js" />
+    <Content Include="Scripts\moment\locale\kn.js" />
+    <Content Include="Scripts\moment\locale\ko.js" />
+    <Content Include="Scripts\moment\locale\ku.js" />
+    <Content Include="Scripts\moment\locale\ky.js" />
+    <Content Include="Scripts\moment\locale\lb.js" />
+    <Content Include="Scripts\moment\locale\lo.js" />
+    <Content Include="Scripts\moment\locale\lt.js" />
+    <Content Include="Scripts\moment\locale\lv.js" />
+    <Content Include="Scripts\moment\locale\me.js" />
+    <Content Include="Scripts\moment\locale\mi.js" />
+    <Content Include="Scripts\moment\locale\mk.js" />
+    <Content Include="Scripts\moment\locale\ml.js" />
+    <Content Include="Scripts\moment\locale\mn.js" />
+    <Content Include="Scripts\moment\locale\mr.js" />
+    <Content Include="Scripts\moment\locale\ms-my.js" />
+    <Content Include="Scripts\moment\locale\ms.js" />
+    <Content Include="Scripts\moment\locale\mt.js" />
+    <Content Include="Scripts\moment\locale\my.js" />
+    <Content Include="Scripts\moment\locale\nb.js" />
+    <Content Include="Scripts\moment\locale\ne.js" />
+    <Content Include="Scripts\moment\locale\nl-be.js" />
+    <Content Include="Scripts\moment\locale\nl.js" />
+    <Content Include="Scripts\moment\locale\nn.js" />
+    <Content Include="Scripts\moment\locale\oc-lnc.js" />
+    <Content Include="Scripts\moment\locale\pa-in.js" />
+    <Content Include="Scripts\moment\locale\pl.js" />
+    <Content Include="Scripts\moment\locale\pt-br.js" />
+    <Content Include="Scripts\moment\locale\pt.js" />
+    <Content Include="Scripts\moment\locale\ro.js" />
+    <Content Include="Scripts\moment\locale\ru.js" />
+    <Content Include="Scripts\moment\locale\sd.js" />
+    <Content Include="Scripts\moment\locale\se.js" />
+    <Content Include="Scripts\moment\locale\si.js" />
+    <Content Include="Scripts\moment\locale\sk.js" />
+    <Content Include="Scripts\moment\locale\sl.js" />
+    <Content Include="Scripts\moment\locale\sq.js" />
+    <Content Include="Scripts\moment\locale\sr-cyrl.js" />
+    <Content Include="Scripts\moment\locale\sr.js" />
+    <Content Include="Scripts\moment\locale\ss.js" />
+    <Content Include="Scripts\moment\locale\sv.js" />
+    <Content Include="Scripts\moment\locale\sw.js" />
+    <Content Include="Scripts\moment\locale\ta.js" />
+    <Content Include="Scripts\moment\locale\te.js" />
+    <Content Include="Scripts\moment\locale\tet.js" />
+    <Content Include="Scripts\moment\locale\tg.js" />
+    <Content Include="Scripts\moment\locale\th.js" />
+    <Content Include="Scripts\moment\locale\tk.js" />
+    <Content Include="Scripts\moment\locale\tl-ph.js" />
+    <Content Include="Scripts\moment\locale\tlh.js" />
+    <Content Include="Scripts\moment\locale\tr.js" />
+    <Content Include="Scripts\moment\locale\tzl.js" />
+    <Content Include="Scripts\moment\locale\tzm-latn.js" />
+    <Content Include="Scripts\moment\locale\tzm.js" />
+    <Content Include="Scripts\moment\locale\ug-cn.js" />
+    <Content Include="Scripts\moment\locale\uk.js" />
+    <Content Include="Scripts\moment\locale\ur.js" />
+    <Content Include="Scripts\moment\locale\uz-latn.js" />
+    <Content Include="Scripts\moment\locale\uz.js" />
+    <Content Include="Scripts\moment\locale\vi.js" />
+    <Content Include="Scripts\moment\locale\x-pseudo.js" />
+    <Content Include="Scripts\moment\locale\yo.js" />
+    <Content Include="Scripts\moment\locale\zh-cn.js" />
+    <Content Include="Scripts\moment\locale\zh-hk.js" />
+    <Content Include="Scripts\moment\locale\zh-mo.js" />
+    <Content Include="Scripts\moment\locale\zh-tw.js" />
+    <Content Include="Scripts\moment\moment-with-locales.js" />
+    <Content Include="Scripts\moment\moment-with-locales.min.js" />
+    <Content Include="Scripts\moment\moment.min.js" />
+    <Content Include="Scripts\ShoppingCart.js" />
+    <Content Include="Web.config" />
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Views\Web.config" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Shop\Index.cshtml" />
+    <Content Include="Views\Shop\CateProduct.cshtml" />
+    <Content Include="Views\Shop\SuppProduct.cshtml" />
+    <Content Include="Views\Home\Register.cshtml" />
+    <Content Include="Views\Shop\Detail.cshtml" />
+    <Content Include="Views\About\Index.cshtml" />
+    <Content Include="Views\Blog\Index.cshtml" />
+    <Content Include="Views\Blog\Detail.cshtml" />
+    <Content Include="Views\Contact\Index.cshtml" />
+    <Content Include="Views\Review\PartialIndexReview.cshtml" />
+    <Content Include="Views\Shop\home.cshtml" />
+    <Content Include="Views\ShoppingCart\PartialCart.cshtml" />
+    <Content Include="Views\ShoppingCart\Index.cshtml" />
+    <Content Include="Views\ShoppingCart\PartialItemCart.cshtml" />
+    <Content Include="Views\ShoppingCart\CheckOut.cshtml" />
+    <Content Include="Views\ShoppingCart\Partial_CheckOut.cshtml" />
+    <Content Include="Views\ShoppingCart\CheckOutSuccess.cshtml" />
+    <Content Include="Views\ShoppingCart\VnpayReturn.cshtml" />
+    <Content Include="Scripts\moment\locales.min.js.map" />
+    <Content Include="Scripts\moment\moment-with-locales.min.js.map" />
+    <Content Include="Scripts\moment\moment.min.js.map" />
+    <Content Include="Views\Wishlist\Index.cshtml" />
+    <Content Include="Views\Review\Index.cshtml" />
+    <Content Include="Views\Auth\EditProfile.cshtml" />
+    <Content Include="Views\Auth\ChangePassword.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="Areas\Admin\Data\" />
+    <Folder Include="Areas\Admin\Methods\" />
+    <Folder Include="Areas\Admin\Views\Base\" />
+    <Folder Include="Helper\" />
+    <Folder Include="Views\Base\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\bootstrap.min.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Content\bootstrap-theme.min.css.map" />
+    <Content Include="Content\bootstrap-theme.css.map" />
+    <None Include="packages.config" />
+    <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
+    <Content Include="Scripts\jquery-3.4.1.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>65404</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>https://localhost:44307/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.targets'))" />
+  </Target>
+  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

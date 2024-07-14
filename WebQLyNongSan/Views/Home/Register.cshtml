@@ -1,0 +1,159 @@
+﻿@model WebQLyNongSan.Models.UserTable
+
+@{
+    ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    * {
+        text-transform: none;
+    }
+</style>
+<div class="main">
+    <form action="~/Home/Register" method="post" class="form js-form animate" id="form-1" enctype="multipart/form-data">
+        <div class="modal-comback">
+            <a href="~/Home/Index"> <i class="fa-solid fa-arrow-left"></i> Quay lại</a>
+        </div>
+        <h3 class="heading__Register">Đăng kí</h3>
+        <p class="desc">Trở thành thành viên của Groco ❤️</p>
+        <div class="spacer"></div>
+
+        <div class="form-group">
+            <label for="UserName" class="form-label">Tên người dùng</label>
+            <input id="UserName" name="UserName" type="text" placeholder="VD: Trung" class="form-control">
+            <span class="form-message"><label class="error" for="UserName"></label></span>
+        </div>
+
+        <div class="form-group">
+            <label for="PassWord" class="form-label">Mật khẩu</label>
+            <input id="password" name="PassWord" type="password" placeholder="VD: 123" class="form-control">
+            <span class="form-message"><label class="error" for="password"></label></span>
+        </div>
+
+        <div class="form-group">
+            <label for="password_confirm" class="form-label">Nhập lại mật khẩu</label>
+            <input id="password_confirm" name="password_confirm" type="password" placeholder="VD: 123" class="form-control">
+            <span class="form-message"><label class="error" for="password_confirm"></label></span>
+        </div>
+
+        <div class="form-group">
+            <label for="avatar" class="form-label">Hình ảnh</label>
+            <img src="~/Areas/Admin/Image/imagePreview.jpg" style="margin: 1rem; height: auto; width: 20rem" id="imagePreview" alt="Alternate Text" />
+            <input id="avatar" name="avatar" type="file" class="form-control" accept="image/jpeg, image/png" onchange="showImagePreview(this, document.getElementById('imagePreview'))">
+            <span class="form-message"><label class="error" for="avatar"></label></span>
+        </div>
+
+        <div class="form-group">
+            <label for="FullName" class="form-label">Họ và tên</label>
+            <input id="FullName" name="FullName" type="text" placeholder="VD: Lê Thị Hà" class="form-control">
+            <span class="form-message"><label class="error" for="FullName"></label></span>
+        </div>
+
+        <div class="form-group">
+            <label for="Email" class="form-label">Email</label>
+            <input id="Email" name="Email" type="text" placeholder="VD: nguoidung@gmail.com" class="form-control">
+            <span class="form-message"><label class="error" for="Email"></label></span>
+        </div>
+
+        <div class="form-group">
+            <label for="Address" class="form-label">Địa chỉ</label>
+            <input id="Address" name="Address" type="text" placeholder="VD: Bình Thuận" class="form-control">
+            <span class="form-message"><label class="error" for="Address"></label></span>
+        </div>
+
+        <div class="form-group">
+            <label for="Phone" class="form-label">Số điện thoại</label>
+            <input id="Phone" name="Phone" type="text" placeholder="VD: 0123456789" class="form-control">
+            <span class="form-message"><label class="error" for="Phone"></label></span>
+        </div>
+
+        <button type="submit" class="form-submit">Đăng kí</button>
+    </form>
+</div>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+
+            //Setting validation
+            $('#form-1').validate({
+                rules: {
+                    UserName: {
+                        required: true,
+                        minlength: 3
+                    },
+                    PassWord: {
+                        required: true,
+                        minlength: 3
+                    },
+                    password_confirm: {
+                        minlength: 3,
+                        equalTo: "#password",
+                    },
+                    avatar: "required",
+                    FullName: {
+                        required: true,
+                        minlength: 6
+                    },
+                    Email: {
+                        required: true,
+                        email: true
+                    },
+                    Phone: {
+                        required: true,
+                        maxlength: 10,
+                        minlength: 10
+                    },
+                    Address: "required",
+
+                },
+                messages: {
+                    UserName: {
+                        required: "Bạn phải nhập tên người dùng",
+                        minlength: "Tên phải có độ dài tối thiểu 3 ký tự"
+                    },
+                    PassWord: {
+                        required: "Bạn phải nhập mật khẩu",
+                        minlength: "Mật khẩu phải có độ dài tối thiểu 3 ký tự"
+                    },
+                    password_confirm: {
+                        equalTo: "Vui lòng nhập lại đúng mật khẩu",
+                        minlength: "Mật khẩu có độ dài tối thiểu 3 ký tự",
+
+                    },
+                    avatar: "Bạn phải chọn hình ảnh",
+                    FullName: {
+                        required: "Bạn phải nhập đầy đủ họ tên",
+                        minlength: "Họ và tên phải có độ dài tối thiểu 6 ký tự"
+                    },
+                    Email: {
+                        required: "Bạn phải điền email",
+                        email: "Bạn phải nhập đúng định dạng email"
+                    },
+                    Phone: {
+                        required: "Bạn phải nhập số điện thoại",
+                        maxlength: "Số điện thoại có độ dài tối đa 10 ký tự",
+                        minlength: "Số điện thoại có độ dài là 10 ký tự"
+                    },
+                    Address: "Bạn phải nhập địa chỉ",
+
+                }
+            });
+
+
+        });
+    </script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+
+    @if (!string.IsNullOrEmpty(ViewBag.errorUserName))
+    {
+        <script>
+            swal({
+                title: "Lỗi đăng kí",
+                text: 'Tên tài khoản đã được sử dụng!!',
+                icon: "warning",
+            });
+        </script>
+    }
+}
+

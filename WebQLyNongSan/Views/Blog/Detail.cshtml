@@ -1,0 +1,20 @@
+﻿@model WebQLyNongSan.Models.Blog
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="heading">
+    <h1>Blog</h1>  
+            <p><a href="~/Home/Index">Trang chủ >></a> <a href="~/Blog/Index">blog>></a> chi tiết bài viết</p>
+</div>
+
+<div class="blog-body-details">
+    <h2 class="title-header">@Model.Title</h2>
+    <span>
+        <img src="~/Areas/Admin/Image/@Model.Picture" alt="Alternate Text" />
+    </span>
+    <p>
+        @Model.Content
+    </p>
+</div>

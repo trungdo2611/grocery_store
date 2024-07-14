@@ -1,0 +1,93 @@
+﻿@model IEnumerable<WebQLyNongSan.Models.OrderTable>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    WebQLyNongSan.Models.QLyNongSanEntities2 db = new WebQLyNongSan.Models.QLyNongSanEntities2();
+}
+
+<!-- ======================= Cards ================== -->
+
+
+<!-- ================ Order Details List ================= -->
+<div class="details home">
+    <div class="tableData">
+        <div class="cardHeader">
+            <h2>Đơn hàng hiện tại</h2>
+            <a href="~/Admin/Order/Index" class="btn">Xem tất cả</a>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <td>Tên đơn hàng</td>
+                    <td>Giá</td>
+                    <td>Phương thức thanh toán</td>
+                    <td>Trạng thái</td>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    var loaivc = db.TransActStatus.FirstOrDefault(x => x.id == item.StransactStatusId);
+                    <tr>
+                        <td>
+                            @item.Code
+                        </td>
+                        <td> @string.Format("{0:#,0}", item.TotalAmount) VNĐ</td>
+                        @if (item.PaymentType == 1)
+                        {
+                            <td>
+                                COD
+                            </td>
+                        }
+                        else
+                        {
+                            <td>
+                                Thanh toán Online
+                            </td>
+                        }
+                        <td>
+                            @if (item.StransactStatusId == 1)
+                            {
+                                <span class="status pending">@loaivc.Status</span>
+                            }
+                            else if (item.StransactStatusId == 2)
+
+                            {
+                                <span class="status inProgress">@loaivc.Status</span>
+                            }
+                            else if (item.StransactStatusId == 3)
+                            {
+                                <span class="status delivered">@loaivc.Status</span>
+                            }
+                            else
+                            {
+                                <span class="status return">@loaivc.Status</span>
+                            }
+
+                        </td>
+                    </tr>
+                }
+
+
+
+            </tbody>
+        </table>
+    </div>
+
+    <!-- ================= New Customers ================ -->
+    <div class="recentCustomers">
+        <div class="cardHeader">
+            <h2>Khách hàng hiện tại</h2>
+        </div>
+
+        <table>
+
+            @Html.Action("partialIndex", "Home")
+          
+        </table>
+    </div>
+</div>
+
+

@@ -1,0 +1,54 @@
+﻿@{
+    WebQLyNongSan.Models.QLyNongSanEntities2 db = new WebQLyNongSan.Models.QLyNongSanEntities2();
+}
+
+<style>
+    .row {
+        display: flex;
+        justify-content: center;
+        font-size: 1.5rem;
+    }
+
+    h1 {
+        margin-bottom: 1rem;
+        text-align: center;
+    }
+</style>
+
+<div class="heading">
+    <h1>Giỏ hàng</h1>
+    <p><a href="~/Home/Index">Trang chủ >></a> <a href="~/Shop/home">shop >></a> <a href="~/ShoppingCart/Index">Giỏ hàng>></a> Thanh toán thành công</p>
+</div>
+<div class="row">
+
+    <div class="col-md-12 text-center">
+        <h1 class="">Thanh toán</h1>
+        @if (ViewBag.ThanhToanThanhCong != null)
+        {
+            <p>Bạn đã thanh toán thành công với @ViewBag.ThanhToanThanhCong  !</p>
+        }
+        <p>@ViewBag.InnerText</p>
+        @if (Session["userId"] != null)
+        {
+            int idUser = (int)Session["userId"];
+            var customer = db.UserTables.Find(idUser);
+
+            <p>Đơn hàng đã được gửi về email @customer.Email, vui lòng check email để xem chi tiết đơn hàng</p>
+        }
+
+    </div>
+
+</div>
+
+@section scripts{
+    @if (ViewBag.successOrder != null)
+    {
+        <script>
+            swal({
+                title: "Thành công",
+                text: 'Bạn đã thanh toán thành công qua ví điện tử VnPay!!',
+                icon: "success",
+            });
+        </script>
+    }
+}

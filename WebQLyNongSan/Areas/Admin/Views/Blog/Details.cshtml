@@ -1,0 +1,28 @@
+﻿@model WebQLyNongSan.Models.Blog
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="details">
+    <div class="tableData">
+        <div class="cardHeader form-index">
+            <h2>Chi tiết bài viết</h2>
+        </div>
+        <div class="blog-body-details">
+            <h2 class="title-header">@Model.Title</h2>
+            <span>
+                <img src="~/Areas/Admin/Image/@Model.Picture" alt="Alternate Text" />
+            </span>
+            <p>
+                @Model.Content
+            </p>
+        </div>
+        
+        <div class="btn-deltails">
+            <a class="btn-Edit-Details" href="~/Admin/Blog/Edit/@Model.id">Chỉnh sửa</a>
+            <a class="btn-Back-Details" href="~/Admin/Blog/Index">Quay lại</a>
+        </div>
+    </div>
+</div>

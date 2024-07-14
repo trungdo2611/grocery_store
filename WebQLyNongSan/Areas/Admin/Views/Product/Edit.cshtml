@@ -1,0 +1,163 @@
+﻿@model WebQLyNongSan.Models.Product
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="main-form">
+    <form action="~/Admin/Product/Edit/@Model.id" method="post" class="form js-form animate" id="form-2" enctype="multipart/form-data">
+        <div class="modal-comback">
+            <a href="~/Admin/Product/Index"> <i class="fa-solid fa-arrow-left"></i> Quay lại</a>
+        </div>
+        <h3 class="heading">Chỉnh sửa sản phẩm</h3>
+
+        <div class="spacer"></div>
+
+        <div class="form-group">
+            <label for="Name" class="form-label">Tên sản phẩm</label>
+            <input id="Name" name="Name" value="@Model.Name" type="text" placeholder="VD: chuối" class="form-control">
+            <span class="form-message"><label class="error" for="Name"></label></span>
+        </div>
+
+        <div class="form-group">
+            <label for="Alias" class="form-label">Alias</label>
+            <input id="Alias" name="Alias" value="@Model.Alias" type="text" placeholder="VD: chuoi" class="form-control">
+            <span class="form-message"><label class="error" for="Alias"></label></span>
+        </div>
+
+        <div class="form-group">
+            <label for="Name" class="form-label">Tên danh mục</label>
+            <select id="CategoryId" name="CategoryId">
+                @foreach (var item in new WebQLyNongSan.Models.QLyNongSanEntities2().Categories.ToList())
+                {
+                    <option value="@item.id" @Html.Raw(item.id == Model.CategoryId ? "selected": "")>@item.Name</option>
+                }
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="Name" class="form-label">Tên nhà sản xuất</label>
+            <select id="supplierId" name="supplierId">
+                @foreach (var item in new WebQLyNongSan.Models.QLyNongSanEntities2().Suppliers.ToList())
+                {
+                    <option value="@item.id" @Html.Raw(item.id == Model.supplierId ? "selected": "")>@item.Name</option>
+                }
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="Picture" class="form-label">Hình ảnh</label>
+            <img src="~/Areas/Admin/Image/@Model.Picture" style="margin: 1rem; height: auto; width: 20rem" id="imagePreview" alt="Alternate Text" />
+            <input id="Picture" name="Picture" value="@Model.Picture" type="file" class="form-control" data-val="true" accept="image/jpeg, image/png" onchange="showImagePreview(this, document.getElementById('imagePreview'))">
+            <span class="form-message"><label class="error" for="Picture"></label></span>
+        </div>
+
+        <div class="form-group">
+            <label for="ShortDesc" class="form-label">Mô tả</label>
+            <input id="ShortDesc" name="ShortDesc" value="@Model.ShortDesc" type="text" placeholder="VD: Thực phẩm..." class="form-control">
+            <span class="form-message"><label class="error" for="ShortDesc"></label></span>
+        </div>
+
+        <div class="form-group">
+            <label for="FullDesc" class="form-label">Mô tả đầy đủ</label>
+            <textarea id="FullDesc" name="FullDesc" type="text" placeholder="VD: Thực phẩm..." class="form-control">@Model.FullDesc</textarea>
+            <span class="form-message"><label class="error" for="FullDesc"></label></span>
+        </div>
+
+        <div class="form-group">
+            <label for="Price" class="form-label">Giá bán</label>
+            <input id="Price" name="Price" value="@Model.Price" type="number" placeholder="VD: 22000" class="form-control">
+            <span class="form-message"><label class="error" for="Price"></label></span>
+        </div>
+
+        <div class="form-group">
+            <label for="Cost" class="form-label">Giá nhập</label>
+            <input id="Cost" name="Cost" value="@Model.Cost" type="number" placeholder="VD: 22000" class="form-control">
+            <span class="form-message"><label class="error" for="Cost"></label></span>
+        </div>
+
+        <div class="form-group">
+            <label for="UnitStock" class="form-label">Số lượng</label>
+            <input id="UnitStock" name="UnitStock" value="@Model.UnitStock" type="number" placeholder="VD: 22" class="form-control">
+            <span class="form-message"><label class="error" for="UnitStock"></label></span>
+        </div>
+
+        <div class="form-group group-display">
+            <div>
+                <label for="HomeFlag" class="form-label">Hiển thị lên trang chủ ?</label>
+                <select id="HomeFlag" name="HomeFlag">
+                    <option value="True" @Html.Raw(Model.HomeFlag == true ? "selected": "")>Có</option>
+                    <option value="False" @Html.Raw(Model.HomeFlag == false ? "selected": "")>Không</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="BestSeller" class="form-label">Gắn nhãn bán chạy ?</label>
+                <select id="BestSeller" name="BestSeller">
+                    <option value="True" @Html.Raw(Model.BestSeller == true ? "selected": "")>Có</option>
+                    <option value="False" @Html.Raw(Model.BestSeller == false ? "selected": "")>Không</option>
+                </select>
+            </div>
+        </div>
+
+        <button type="submit" class="form-submit">Chỉnh sửa</button>
+    </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+
+            //Sự kiện nhập của text tên sản phẩm
+            $('#Name').keypress(function () {
+                $('#Alias').val(getAlias($(this).val()));
+            });
+
+            //Setting validation
+            $('#form-2').validate({
+                rules: {
+                    Name: {
+                        required: true,
+                        minlength: 3
+                    },
+                    Alias: "required",
+                    ShortDesc: {
+                        required: true,
+                        minlength: 3
+                    },
+                    FullDesc: {
+                        required: true,
+                        minlength: 3
+                    },
+                    Cost: "required",
+                    Price: "required",
+                    UnitStock: "required",
+                },
+                messages: {
+                    Name: {
+                        required: "Bạn phải nhập tên",
+                        minlength: "Tên phải có độ dài tối thiểu 3 ký tự"
+                    },
+                    ShortDesc: {
+                        required: "Bạn phải nhập mô tả",
+                        minlength: "Mô tả phải có độ dài tối thiểu 3 ký tự"
+                    },
+                    FullDesc: {
+                        required: "Bạn phải nhập mô tả chi tiết",
+                        minlength: "Mô tả chi tiết phải có độ dài tối thiểu 3 ký tự"
+                    },
+                    Alias: "Bạn phải nhập Alias",
+                    Cost: "Bạn phải nhập giá nhập",
+                    Price: "Bạn phải nhập giá bán",
+                    UnitStock: "Bạn nhập số lượng sản phẩm",
+                }
+            });
+
+        });
+    </script>
+
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+}

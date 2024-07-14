@@ -1,0 +1,154 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+@model PagedList.IPagedList<WebQLyNongSan.Models.SuppProductViewModel>
+@{
+    ViewBag.Title = "SuppProduct";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    WebQLyNongSan.Models.QLyNongSanEntities2 db = new WebQLyNongSan.Models.QLyNongSanEntities2();
+}
+
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+
+
+<div class="heading">
+    <h1>Shop</h1>
+    @if (Model.Count > 0)
+    {
+        var fisrt = Model.FirstOrDefault();
+        var loai = db.Suppliers.Find(fisrt.products.supplierId);
+        if (loai != null)
+        {
+            <p><a href="~/Home/Index">Trang chủ >></a> <a href="~/Shop/home">shop>></a> nhà sản xuất: @loai.Name</p>
+        }
+
+    }
+
+</div>
+
+<div class="grid-wide">
+    <div class="row">
+        <div class="col l-2">
+            <nav class="category__container">
+                <h3 class="category__heading">Danh mục</h3>
+                <ul class="category-list">
+                    <li class="category-item category-item--active">
+                        <a href="~/Shop/Index" class="category-item__link">Tất cả</a>
+                    </li>
+                    @foreach (var item in new WebQLyNongSan.Models.QLyNongSanEntities2().Categories.ToList())
+                    {
+                        <li class="category-item category-item--active">
+                            <a href="~/Shop/CateProduct/@item.id" class="category-item__link">@item.Name</a>
+                        </li>
+                    }
+                </ul>
+
+            </nav>
+
+            <nav class="category__container">
+                <h3 class="category__heading">Nhà sản xuất</h3>
+
+                @foreach (var item in new WebQLyNongSan.Models.QLyNongSanEntities2().Suppliers.ToList())
+                {
+
+                    <ul class="category-list">
+                        <li class="category-item category-item--active">
+                            <a href="~/Shop/SuppProduct/@item.id" class="category-item__link">@item.Name</a>
+                        </li>
+                    </ul>
+                }
+            </nav>
+        </div>
+        <div class="col l-10">
+            <section class="products">
+                <h1 class="title"><span>Sản phẩm </span></h1>
+                <div class="box-container">
+                    @if (Model.Any())
+                    {
+                        foreach (var item in Model)
+                        {
+                            <div class="box">
+                                <div class="icons">
+                                    @{
+                                        if (item.products.UnitStock > 0)
+                                        {
+                                            <a href="" class="fas fa-shopping-cart btnAddCart" data-id="@item.products.id"></a>
+                                        }
+                                        else
+                                        {
+                                            <a onclick="soldOut()" class="fas fa-shopping-cart"></a>
+                                        }
+
+                                        if (Session["userId"] == null)
+                                        {
+                                            <a onclick="checkLogin()" class="fas fa-heart"></a>
+
+                                        }
+                                        else
+                                        {
+                                            var userId = (int)(Session["userId"]);
+                                            var wishlist = db.WishLists.FirstOrDefault(x => x.ProductID == item.products.id && x.UserID == userId);
+                                            var isWishlist = false;
+                                            if (wishlist != null)
+                                            {
+                                                isWishlist = true;
+                                            }
+                                            if (isWishlist == true)
+                                            {
+                                                <a data-id="@item.products.id" class="fas fa-heart favorite activeHeart"></a>
+                                            }
+                                            else
+                                            {
+                                                <a data-id="@item.products.id" class="fas fa-heart favorite"></a>
+                                            }
+
+                                        }
+                                    }
+
+                                    <a href="~/Shop/Detail/@item.products.id" class="fas fa-eye"></a>
+                                </div>
+                                <div class="image">
+                                    <img src="~/Areas/Admin/Image/@item.products.Picture" alt="">
+                                </div>
+                                <div class="content">
+                                    <h3>@item.products.Name </h3>
+                                    <p class="p__stock">Số lượng : @string.Format("{0:#,0}", item.products.UnitStock) </p>
+                                    <div class="price"> @string.Format("{0:#,0}", item.products.Price) VNĐ</div>
+                                    <div class="stars">
+                                        @if (item.StarAverage == null)
+                                        {
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                        }
+                                        else
+                                        {
+                                            for (var i = 0; i < item.StarAverage; i++)
+                                            {
+                                                <i class="fas fa-star"></i>
+                                            }
+                                            for (var i = (item.StarAverage + 1); i <= 5; i++)
+                                            {
+                                                <i class="far fa-star"></i>
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <p class="p__search">Nhà sản xuất này hiện tại chưa có sản phẩm nào</p>
+                    }
+
+
+
+                </div>
+
+                @Html.PagedListPager(Model, page => Url.Action("Index", new { page, currentFilter = ViewBag.CurrentFilter }))
+            </section>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,98 @@
+﻿@model WebQLyNongSan.Models.Contact
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="main-form">
+    <form action="~/Admin/Contact/Edit/@Model.id" method="post" class="form js-form animate" id="form-1" enctype="multipart/form-data">
+        <div class="modal-comback">
+            <a href="~/Admin/Contact/Index"> <i class="fa-solid fa-arrow-left"></i> Quay lại</a>
+        </div>
+        <h3 class="heading">Chỉnh sửa Liên hệ</h3>
+
+        <div class="spacer"></div>
+
+        <div class="form-group">
+            <label for="Name" class="form-label">Tên người dùng</label>
+            <input id="Name" name="Name" value="@Model.Name" type="text" placeholder="VD: Trung" class="form-control">
+            <span class="form-message"><label class="error" for="Name"></label></span>
+        </div>
+
+        <div class="form-group">
+            <label for="Email" class="form-label">Email</label>
+            <input id="Email" name="Email" value="@Model.Email" type="text" placeholder="VD: nong-san" class="form-control">
+            <span class="form-message"><label class="error" for="Email"></label></span>
+        </div>
+
+        <div class="form-group">
+            <label for="Phone" class="form-label">Số điện thoại</label>
+            <input id="Phone" name="Phone" value="@Model.Phone" type="text" placeholder="VD: nong-san" class="form-control">
+            <span class="form-message"><label class="error" for="Phone"></label></span>
+        </div>
+
+        <div class="form-group">
+            <label for="Content" class="form-label">Nội dung</label>
+            <input id="Content" name="Content" value="@Model.Content" type="text" placeholder="VD: nong-san" class="form-control">
+            <span class="form-message"><label class="error" for="Content"></label></span>
+        </div>
+
+        <button type="submit" class="form-submit">Chỉnh sửa</button>
+    </form>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+@section scripts {
+    <script>
+        $(document).ready(function () {
+
+            //Setting validation
+            $('#form-1').validate({
+                rules: {
+                    Name: {
+                        required: true,
+                        minlength: 3
+                    },
+                    Content: {
+                        required: true,
+                        minlength: 10
+                    },
+                    Email: {
+                        required: true,
+                        email: true
+                        },
+                    Phone: {
+                        required: true,
+                        maxlength: 10,
+                        minlength: 10
+                    }
+                },
+                messages: {
+                    Name: {
+                        required: "Bạn phải nhập tên người dùng",
+                        minlength: "Tên phải có độ dài tối thiểu 3 ký tự"
+                    },
+                    Email: {
+                        email: "Bạn phải nhập đúng định dạng email",
+                        required: "Bạn phải nhập email"
+                        },
+                    Phone: {
+                        required: "Bạn phải nhập số điện thoại",
+                        maxlength: "Số điện thoại có độ dài tối đa 10 ký tự",
+                        minlength: "Số điện thoại có độ dài là 10 ký tự"
+                    },
+                    
+                    Content: {
+                        required: "Bạn phải nội dung",
+                        minlength: "Nội dung phải có độ dài tối thiểu 10 ký tự"
+                    },
+                }
+            });
+
+
+        });
+
+    </script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+}
+

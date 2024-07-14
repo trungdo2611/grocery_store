@@ -1,0 +1,83 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+@model PagedList.IPagedList<WebQLyNongSan.Models.Product>
+@{
+    ViewBag.Title = "TonKho";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    WebQLyNongSan.Models.QLyNongSanEntities2 db = new WebQLyNongSan.Models.QLyNongSanEntities2();
+}
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+
+<style>
+    .btnTonKho {
+        display: inline-block;
+        padding: 0.8rem 2rem;
+        background: var(--blue);
+        color: var(--white);
+        font-size: 1.7rem;
+        cursor: pointer;
+        border: none;
+        border-radius: 0.3rem;
+        text-decoration: none;
+    }
+
+        .btnTonKho:hover {
+            background: #000;
+        }
+</style>
+<div class="tool">
+    <div class="heading">
+        <form action="~/Admin/Statistical/TonKho" method="get" class="search">
+            <label>
+                <input id="search-input" name="searchString" value="@ViewBag.currentFilter" type="text" placeholder="Search here">
+                <button id="btnSearch" type="submit"> <i class="fa-solid fa-magnifying-glass"></i></button>
+            </label>
+        </form>
+        <a href="~/Admin/Statistical/Index" class="btnTonKho">
+
+            Thống kê doanh thu
+
+        </a>
+    </div>
+</div>
+
+
+<!-- ================ Order Details List ================= -->
+<div class="details">
+    <div class="tableData">
+        <div class="cardHeader form-index">
+            <h2>Thống kê tồn kho</h2>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <td>Tên</td>
+                    <td>Hình ảnh</td>
+                    <td>Tồn kho</td>
+                </tr>
+            </thead>
+            <tbody class="tbody">
+                @foreach (var item in Model)
+                {
+                    var loai = db.Categories.SingleOrDefault(x => x.id == item.CategoryId);
+                    <tr>
+                        <td>
+                            @item.Name
+                        </td>                      
+                        <td>
+                            <img src="~/Areas/Admin/Image/@item.Picture" style="width: 100px; height:auto" alt="Alternate Text" />
+                        </td>
+                        <td>
+                            @string.Format("{0:#,0}", item.UnitStock)
+                        </td>
+
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    @Html.PagedListPager(Model, page => Url.Action("TonKho", new { page, currentFilter = ViewBag.CurrentFilter }))
+</div>
+

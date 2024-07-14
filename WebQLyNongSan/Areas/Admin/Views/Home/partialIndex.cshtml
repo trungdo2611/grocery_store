@@ -1,0 +1,18 @@
+﻿@model IEnumerable<WebQLyNongSan.Models.UserTable>
+@{ 
+    WebQLyNongSan.Models.QLyNongSanEntities2 db = new WebQLyNongSan.Models.QLyNongSanEntities2();
+}
+
+@foreach (var item in Model)
+{
+    var role = db.Roles.SingleOrDefault(n => n.id == item.RoleID);
+    <tr>
+        <td width="60px">
+            <div class="imgBx"><img src="~/Areas/Admin/Image/@item.avatar" alt=""></div>
+        </td>
+        <td>
+            <h4>@item.UserName <br> <span>@role.Name</span></h4>
+        </td>
+    </tr>
+}
+

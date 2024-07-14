@@ -1,0 +1,81 @@
+﻿@model PagedList.IPagedList<WebQLyNongSan.Models.WishlistViewModel>
+@using PagedList;
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    WebQLyNongSan.Models.QLyNongSanEntities2 db = new WebQLyNongSan.Models.QLyNongSanEntities2();
+}
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+<div class="heading">
+    <h1>Mục ưa thích</h1>
+    <p><a href="~/Home/Index">Trang chủ >></a>ưa thích</p>
+</div>
+<section class="products">
+    <h1 class="title"><span>sản phẩm ưa thích</span></h1>
+    <div class="box-container">
+        @if (Model.Any())
+        {
+            foreach (var item in Model)
+            {
+
+                <div class="box">
+                    <div class="icons">
+                        @{
+                            if (item.products.UnitStock > 0)
+                            {
+                                <a href="" class="fas fa-shopping-cart btnAddCart" data-id="@item.products.id"></a>
+                            }
+                            else
+                            {
+                                <a onclick="soldOut()" class="fas fa-shopping-cart"></a>
+                            }
+
+                            if (Session["userId"] == null)
+                            {
+                                <a onclick="checkLogin()" class="fas fa-heart"></a>
+
+                            }
+                            else
+                            {
+                                var userId = (int)(Session["userId"]);
+                                var wishlist = db.WishLists.FirstOrDefault(x => x.ProductID == item.products.id && x.UserID == userId);
+                                var isWishlist = false;
+                                if (wishlist != null)
+                                {
+                                    isWishlist = true;
+                                }
+                                if (isWishlist == true)
+                                {
+                                    <a data-id="@item.products.id" class="fas fa-heart favorite activeHeart"></a>
+                                }
+                                else
+                                {
+                                    <a data-id="@item.products.id" class="fas fa-heart favorite"></a>
+                                }
+
+
+                            }
+                        }
+
+                        <a href="~/Shop/Detail/@item.products.id" class="fas fa-eye"></a>
+                    </div>
+                    <div class="image">
+                        <img src="~/Areas/Admin/Image/@item.products.Picture" alt="">
+                    </div>
+                    <div class="content">
+                        <h3>@item.products.Name</h3>
+                        <p class="p__stock">Số lượng : @string.Format("{0:#,0}", item.products.UnitStock) </p>
+                        <div class="price"> @string.Format("{0:#,0}", item.products.Price) VNĐ</div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <h2>Bạn chưa có sản phẩm ưa thích nào</h2>
+        }
+    </div>
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, currentFilter = ViewBag.CurrentFilter }))
+</section>
+

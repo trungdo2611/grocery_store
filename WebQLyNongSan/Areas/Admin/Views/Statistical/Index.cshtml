@@ -1,0 +1,209 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .search {
+        width: 100%;
+    }
+    .display-search {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+        .display-search span {
+            font-size: 1.3rem;
+            width: 18rem;
+        }
+        .fromDate {
+            margin-right: 2rem;
+        }
+
+        .heading {
+            display: flex!important;
+            justify-content: flex-end!important;
+        }
+    .btnTonKho {
+        display: inline-block;
+        padding: 0.8rem 2rem;
+        background: var(--blue);
+        color: var(--white);
+        font-size: 1.7rem;
+        cursor: pointer;
+        border: none;
+        border-radius: 0.3rem;
+        text-decoration: none;
+    }
+        .btnTonKho:hover {
+               background: #000;
+    }
+</style>
+
+
+@*<div class="tool">
+    <div class="heading">
+
+        <form action="" class="search">
+            <label class="display-search">
+                <span>Từ ngày : <input id="search-input-1" type="date" placeholder="Search here"></span>
+                <span>Đến ngày : <input id="search-input-2" type="date" placeholder="Search here"></span>
+                <button type="submit"> <i class="fa-solid fa-magnifying-glass"></i></button>
+            </label>
+           
+        </form>
+    </div>
+</div>*@
+
+<div class="tool">  
+    <div class="heading">
+        <a href="~/Admin/Statistical/TonKho" class="btnTonKho">
+            
+            Thống kê tồn kho
+
+        </a>
+    </div>
+</div>
+
+<div class="details">
+    <div class="tableData">
+        <div class="cardHeader form-index">
+            <h2>Thống kê doanh thu</h2>
+        </div>
+
+        <div class="chart">
+            <canvas id="barChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <td>#</td>
+                    <td>Ngày</td>
+                    <td>Doanh thu</td>
+                    <td>Lợi nhuận</td>
+
+                </tr>
+            </thead>
+            <tbody id="load_data"></tbody>
+        </table>
+        <div class="not-search"></div>
+    </div>
+    
+</div>
+
+@section scripts{
+    <script src="~/Scripts/chart.js/Chart.min.js"></script>
+    <script src="~/Scripts/moment/moment.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            GetChart();
+
+            $(".search").submit(function (e) {
+                e.preventDefault();
+                // Lấy từ khóa tìm kiếm từ input
+                var searchString1 = $("#search-input-1").val();
+                var searchString2 = $("#search-input-2").val();     
+                var dateObject1 = new Date(searchString1);
+                var dateObject2 = new Date(searchString2);
+                var formattedDate1 = moment(dateObject1).format("DD/MM/YYYY");
+                var formattedDate2 = moment(dateObject2).format("DD/MM/YYYY");
+                console.log(formattedDate1, formattedDate2)
+                // Thực hiện tìm kiếm bằng AJAX
+                GetChart(formattedDate1, formattedDate1);
+            });
+        });
+
+         function GetChart() {
+            /* ChartJS
+             * -------
+             * Here we will create a few charts using ChartJS
+             */
+
+            var arrDoanhThu = [];
+            var arrLoiNhuan = [];
+            var arrDate = [];
+            $.ajax({
+                url: '/Statistical/GetStatistical',
+                type: 'GET',
+                data: { fromDate: '', toDate: ''},
+                success: function (rs) {
+
+                    $.each(rs.Data, function (i, item) {
+                        var strDate = moment(item.Date).format('DD/MM/yyyy');
+                        arrDate.push(strDate);
+                        arrDoanhThu.push(item.DoanhThu);
+                        arrLoiNhuan.push(item.LoiNhuan);
+                    });
+                    var areaChartData = {
+                        labels: arrDate,
+                        datasets: [
+                            {
+                                label: 'Lợi nhuận',
+                                backgroundColor: 'rgba(186,195,78,0.9)',
+                                borderColor: 'rgba(186,195,78,0.8)',
+                                pointRadius: false,
+                                pointColor: '#BAC34E',
+                                pointStrokeColor: 'rgba(186,195,78,1)',
+                                pointHighlightFill: '#fff',
+                                pointHighlightStroke: 'rgba(186,195,78,1)',
+                                data: arrLoiNhuan
+                            },
+                            {
+                                label: 'Danh thu',
+                                backgroundColor: 'rgba(210, 214, 222, 1)',
+                                borderColor: 'rgba(210, 214, 222, 1)',
+                                pointRadius: false,
+                                pointColor: 'rgba(210, 214, 222, 1)',
+                                pointStrokeColor: '#c1c7d1',
+                                pointHighlightFill: '#fff',
+                                pointHighlightStroke: 'rgba(220,220,220,1)',
+                                data: arrDoanhThu
+                            },
+                        ]
+                    }
+                    //-------------
+                    //- BAR CHART -
+                    //-------------
+                    var barChartCanvas = $('#barChart').get(0).getContext('2d')
+                    var barChartData = $.extend(true, {}, areaChartData)
+                    var temp0 = areaChartData.datasets[0]
+                    var temp1 = areaChartData.datasets[1]
+                    barChartData.datasets[0] = temp1
+                    barChartData.datasets[1] = temp0
+
+                    var barChartOptions = {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        datasetFill: false
+                    }
+
+                    new Chart(barChartCanvas, {
+                        type: 'bar',
+                        data: barChartData,
+                        options: barChartOptions
+                    });
+                    load_data(rs.Data);
+                }
+            });
+
+
+        }
+
+        function load_data(data) {
+            var strHtml = "";
+            $.each(data, function (i, item) {
+                var strDate = moment(item.Date).format('DD/MM/yyyy');
+                strHtml += "<tr>";
+                strHtml += "<td>" + (i + 1) + "</td>";
+                strHtml += "<td>" + strDate + "</td>";
+                strHtml += "<td>" + item.DoanhThu.toLocaleString() + " VNĐ</td>";
+                strHtml += "<td>" + item.LoiNhuan.toLocaleString() + " VNĐ</td>";
+                strHtml += "</tr>";
+            });
+            $('#load_data').html(strHtml);
+        }
+    </script>
+    }

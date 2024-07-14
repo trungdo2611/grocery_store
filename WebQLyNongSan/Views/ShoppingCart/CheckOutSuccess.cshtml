@@ -1,0 +1,44 @@
+﻿@{
+    ViewBag.Title = "Payment";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    WebQLyNongSan.Models.QLyNongSanEntities2 db = new WebQLyNongSan.Models.QLyNongSanEntities2();
+}
+<div class="heading">
+    <h1>Đặt hàng</h1>
+    <p><a href="~/Home/Index">Trang chủ >></a> <a href="~/Shop/home">shop >></a><a href="~/ShoppingCart/Index">Giỏ hàng>></a>Đặt hàng thành công</p>
+</div>
+
+<div id="load_data">
+    @if (Session["userId"] != null)
+    {
+        int idUser = (int)Session["userId"];
+        var customer = db.UserTables.Find(idUser);
+        <h2>Cảm ơn bạn đã ghé thăm và mua hàng tại GroCo Shop!!</h2>
+        <p style="text-align: center; font-size: 1.4rem;">Đơn hàng đã được gửi về email @customer.Email, vui lòng check email để xem chi tiết đơn hàng</p>
+    }
+
+</div>
+
+<style>
+    h2 {
+        text-align: center;
+        margin: 20px;
+        font-size: 2rem;
+    }
+</style>
+
+@section scripts{
+    @if (ViewBag.successOrder != null)
+    {
+        <script>
+            swal({
+                title: "Thành công",
+                text: '@Html.Raw(ViewBag.successOrder) !!',
+                icon: "success",
+            });
+        </script>
+    }
+}

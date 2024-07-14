@@ -1,0 +1,35 @@
+﻿@model WebQLyNongSan.Models.Contact
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="details">
+    <div class="tableData">
+        <div class="cardHeader form-index">
+            <h2>Chi tiết liên hệ của người dùng @Model.Name</h2>
+        </div>
+
+        <div class="card-wrapper">
+            <div class="card">
+
+
+                <!-- card left -->
+                <div class="main-content">
+                    <h2 class="content-title">@Model.Name</h2>
+                    <div class="content-element">                   
+                        <p class="last-price">Email: <span>@Model.Email</span></p>
+                        <p class="last-price">Nội dung: <span>@Model.Content</span></p>
+                        <p class="last-price">Số điện thoại: <span>@Model.Phone</span></p>
+          
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="btn-deltails">
+            <a class="btn-Edit-Details" href="~/Admin/Contact/Edit/@Model.id">Chỉnh sửa</a>
+            <a class="btn-Back-Details" href="~/Admin/Contact/Index">Quay lại</a>
+        </div>
+    </div>
+</div>

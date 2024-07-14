@@ -1,0 +1,297 @@
+﻿@model WebQLyNongSan.Models.ShopViewModel1
+@{
+    ViewBag.Title = "home";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    WebQLyNongSan.Models.QLyNongSanEntities2 db = new WebQLyNongSan.Models.QLyNongSanEntities2();
+}
+
+<div class="heading">
+    <h1>shop chúng tôi</h1>
+    <p><a href="~/Home/Index">Trang chủ >></a> <a href="~/Shop/home">shop</a></p>
+</div>
+
+<section class="category">
+    <h1 class="title"><span>danh mục</span></h1>
+
+    <div class="box-container">
+        @foreach (var item in Model._categories)
+        {
+            <a href="~/Shop/CateProduct/@item.id" class="box">
+                <img src="~/Areas/Admin/Image/@item.Picture" alt="">
+                <h3>@item.Name</h3>
+            </a>
+        }
+
+    </div>
+</section>
+
+<section class="popular-products">
+    <h1 class="title"><span>Sản phẩm mới</span></h1>
+    <div class="box-container">
+        @foreach (var item in Model._products.OrderByDescending(n => n.id).Take(6))
+        {
+            <div class="box">
+                <div class="icons">
+                    @{
+                        if (item.UnitStock > 0)
+                        {
+                            <a href="" class="fas fa-shopping-cart btnAddCart" data-id="@item.id"></a>
+                        }
+                        else
+                        {
+                            <a onclick="soldOut()" class="fas fa-shopping-cart"></a>
+                        }
+
+                        if (Session["userId"] == null)
+                        {
+                            <a onclick="checkLogin()" class="fas fa-heart"></a>
+
+                        }
+                        else
+                        {
+                            var userId = (int)(Session["userId"]);
+                            var wishlist = db.WishLists.FirstOrDefault(x => x.ProductID == item.id && x.UserID == userId);
+                            var isWishlist = false;
+                            if (wishlist != null)
+                            {
+                                isWishlist = true;
+                            }
+                            if (isWishlist == true)
+                            {
+                                <a data-id="@item.id" class="fas fa-heart favorite activeHeart"></a>
+                            }
+                            else
+                            {
+                                <a data-id="@item.id" class="fas fa-heart favorite"></a>
+                            }
+
+                        }
+
+                    }
+
+
+                    <a href="~/Shop/Detail/@item.id" class="fas fa-eye"></a>
+                </div>
+                <div class="image">
+                    <img src="~/Areas/Admin/Image/@item.Picture" alt="">
+                </div>
+                <div class="content">
+                    <h3>@item.Name </h3>
+                    <p class="p__stock">Số lượng : @string.Format("{0:#,0}", item.UnitStock) </p>
+                    <div class="price"> @string.Format("{0:#,0}", item.Price) VNĐ</div>
+                    <div class="stars">
+                        @{
+                            decimal? averageRating = Model.AverageRatings.ContainsKey(item.id) ? Model.AverageRatings[item.id] : (decimal?)null;
+                            int numberOfStars = averageRating.HasValue ? (int)Math.Round(averageRating.Value) : 0;
+                            if (averageRating == null)
+                            {
+                                <i class="far fa-star"></i>
+                                <i class="far fa-star"></i>
+                                <i class="far fa-star"></i>
+                                <i class="far fa-star"></i>
+                                <i class="far fa-star"></i>
+                            }
+                            else
+                            {
+                                for (var i = 0; i < numberOfStars; i++)
+                                {
+                                    <i class="fas fa-star"></i>
+                                }
+                                for (var i = (numberOfStars + 1); i <= 5; i++)
+                                {
+                                    <i class="far fa-star"></i>
+                                }
+                            }
+                        }
+
+
+                    </div>
+                </div>
+            </div>
+        }
+
+
+
+    </div>
+</section>
+
+<section class="best-sale-products">
+    <h1 class="title">
+        <span>
+            Sản phẩm bán chạy
+        </span>
+    </h1>
+    <div class="box-container">
+        @foreach (var item in Model._products.Where(n => n.BestSeller == true).Take(6))
+        {
+            <div class="box">
+                <div class="icons">
+                    @{                     
+                        if (item.UnitStock > 0)
+                        {
+                            <a href="" class="fas fa-shopping-cart btnAddCart" data-id="@item.id"></a>
+                        }
+                        else
+                        {
+                            <a onclick="soldOut()" class="fas fa-shopping-cart"></a>
+                        }
+
+                        if (Session["userId"] == null)
+                        {
+                            <a onclick="checkLogin()" class="fas fa-heart"></a>
+
+                        }
+                        else
+                        {
+                            var userId = (int)(Session["userId"]);
+                            var wishlist = db.WishLists.FirstOrDefault(x=>x.ProductID == item.id && x.UserID == userId);
+                            var isWishlist = false;
+                            if (wishlist != null)
+                            {
+                                isWishlist = true;
+                            }
+                            if (isWishlist == true)
+                            {
+                                <a data-id="@item.id" class="fas fa-heart favorite activeHeart"></a>
+                            }
+                            else
+                            {
+                                <a data-id="@item.id" class="fas fa-heart favorite"></a>
+                            }
+
+
+                        }
+
+                    }
+
+                    <a href="~/Shop/Detail/@item.id" class="fas fa-eye"></a>
+                </div>
+                <div class="image">
+                    <img src="~/Areas/Admin/Image/@item.Picture" alt="">
+                </div>
+                <div class="content">
+                    <h3>@item.Name</h3>
+                    <p class="p__stock">Số lượng : @string.Format("{0:#,0}", item.UnitStock) </p>
+                    <div class="price">@string.Format("{0:#,0}", item.Price) VNĐ</div>
+                    <div class="stars">
+                        @{
+                            decimal? averageRating = Model.AverageRatings.ContainsKey(item.id) ? Model.AverageRatings[item.id] : (decimal?)null;
+                            int numberOfStars = averageRating.HasValue ? (int)Math.Round(averageRating.Value) : 0;
+                            if (averageRating == null)
+                            {
+                                <i class="far fa-star"></i>
+                                <i class="far fa-star"></i>
+                                <i class="far fa-star"></i>
+                                <i class="far fa-star"></i>
+                                <i class="far fa-star"></i>
+                            }
+                            else
+                            {
+                                for (var i = 0; i < numberOfStars; i++)
+                                {
+                                    <i class="fas fa-star"></i>
+                                }
+                                for (var i = (numberOfStars + 1); i <= 5; i++)
+                                {
+                                    <i class="far fa-star"></i>
+                                }
+                            }
+                        }
+
+                    </div>
+                </div>
+            </div>
+        }
+
+
+
+    </div>
+</section>
+
+
+<section class="products">
+    <h1 class="title"><span>sản phẩm</span><a href="~/Shop/Index">xem tất cả >></a></h1>
+    <div class="box-container">
+        @foreach (var item in Model._products.Where(n => n.HomeFlag == true).Take(6))
+        {
+            <div class="box">
+                <div class="icons">
+                    @{
+                        if (item.UnitStock > 0)
+                        {
+                            <a href="" class="fas fa-shopping-cart btnAddCart" data-id="@item.id"></a>
+                        }
+                        else
+                        {
+                            <a onclick="soldOut()" class="fas fa-shopping-cart"></a>
+                        }
+
+                        if (Session["userId"] == null)
+                        {
+                            <a onclick="checkLogin()" class="fas fa-heart"></a>
+
+                        }
+                        else
+                        {
+                            var userId = (int)(Session["userId"]);
+                            var wishlist = db.WishLists.FirstOrDefault(x => x.ProductID == item.id && x.UserID == userId);
+                            var isWishlist = false;
+                            if (wishlist != null)
+                            {
+                                isWishlist = true;
+                            }
+                            if (isWishlist == true)
+                            {
+                                <a data-id="@item.id" class="fas fa-heart favorite activeHeart"></a>
+                            }
+                            else
+                            {
+                                <a data-id="@item.id" class="fas fa-heart favorite"></a>
+                            }
+
+
+                        }
+
+                    }
+
+                    <a href="~/Shop/Detail/@item.id" class="fas fa-eye"></a>
+                </div>
+                <div class="image">
+                    <img src="~/Areas/Admin/Image/@item.Picture" alt="">
+                </div>
+                <div class="content">
+                    <h3>@item.Name</h3>
+                    <p class="p__stock">Số lượng : @string.Format("{0:#,0}", item.UnitStock) </p>
+                    <div class="price"> @string.Format("{0:#,0}", item.Price) VNĐ</div>
+                    <div class="stars">
+                        @{
+                            decimal? averageRating = Model.AverageRatings.ContainsKey(item.id) ? Model.AverageRatings[item.id] : (decimal?)null;
+                            int numberOfStars = averageRating.HasValue ? (int)Math.Round(averageRating.Value) : 0;
+                            if (averageRating == null)
+                            {
+                                <i class="far fa-star"></i>
+                                <i class="far fa-star"></i>
+                                <i class="far fa-star"></i>
+                                <i class="far fa-star"></i>
+                                <i class="far fa-star"></i>
+                            }
+                            else
+                            {
+                                for (var i = 0; i < numberOfStars; i++)
+                                {
+                                    <i class="fas fa-star"></i>
+                                }
+                                for (var i = (numberOfStars + 1); i <= 5; i++)
+                                {
+                                    <i class="far fa-star"></i>
+                                }
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</section>
+
+

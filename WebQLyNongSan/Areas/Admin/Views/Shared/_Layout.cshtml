@@ -1,0 +1,578 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="icon" type="image/x-icon" href="~/assets/img/logo Trung 1.svg">
+    <link href="~/Areas/Admin/assets/css/style.css" rel="stylesheet" />
+    <link href="~/Areas/Admin/assets/css/toast.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<style>
+    ::-webkit-scrollbar {
+        width: 5px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+        background: #f6f6f6;
+    }
+
+
+    /* Icons xem, xóa , sửa */
+    .icons {
+        text-align: center;
+        padding: 0 4px;
+        color: #000;
+    }
+
+        .icons:hover {
+            color: #fff;
+        }
+
+
+    /*Css cắt ngắn văn bản*/
+    .p_Desc {
+        padding-top: 3rem !important;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 1;
+        display: -webkit-box;
+        overflow: hidden;
+        line-height: 3;
+    }
+
+        .p_Desc.p_Contact {
+            padding-top: 1rem !important;
+            max-width: 25rem;
+        }
+        .p_Content {
+            padding-top: 3rem !important;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            display: -webkit-box;
+            overflow: hidden;
+            line-height: 2.4;
+        }
+
+    /*Css đoạn không tìm thấy từ khóa tìm kiếm*/
+    .p_Search {
+        padding: 2rem !important;
+        text-align: center !important;
+        font-size: 1.7rem;
+    }
+
+    /*Phân trang cho pagelist*/
+    .pagination-container {
+        display: flex;
+        justify-content: center;
+    }
+    /*Phân trang*/
+    .pagination {
+        display: flex;
+        justify-content: center;
+        padding: 1rem;
+        font-size: 1.7rem;
+        list-style: none;
+    }
+
+        .pagination .page-item {
+            display: inline-block;
+            border: 1px solid #dee2e6;
+            padding: .7rem 1.2rem;
+        }
+
+    .active1 {
+        color: #fff;
+        background: #007bff;
+        border-color: #007bff;
+    }
+
+    .active.page-link {
+        color: #fff;
+    }
+
+    .pagination .page-item .page-link {
+        font-size: 1.5rem;
+        text-decoration: none;
+    }
+
+    /* Css deltail*/
+    .btn-deltails {
+        position: absolute;
+        bottom: 3rem;
+        left: 35rem;
+    }
+
+    .btn-Edit-Details,
+    .btn-Back-Details {
+        text-decoration: none;
+    }
+
+    .btn-Edit-Details {
+        display: inline-block;
+        padding: 0.8rem 2rem;
+        background: var(--blue);
+        color: var(--white);
+        font-size: 1.7rem;
+        cursor: pointer;
+        border: none;
+        border-radius: 0.3rem;
+        margin-right: 1.5rem;
+    }
+
+        .btn-Edit-Details:hover {
+            background: #000;
+        }
+
+    .btn-Back-Details:hover {
+        background: #d8d6d6;
+    }
+
+    .btn-Back-Details {
+        display: inline-block;
+        padding: 0.8rem 2rem;
+        background: #efefef;
+        color: #000;
+        font-size: 1.7rem;
+        cursor: pointer;
+        border: none;
+        border-radius: 0.3rem;
+        margin-left: 1.5rem;
+    }
+
+    .card-wrapper {
+        margin-bottom: 9rem;
+    }
+
+        .card-wrapper .card {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+    .main-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+        .main-content p {
+            padding: 1.2rem;
+        }
+
+            .main-content p span {
+                padding-left: .4rem;
+            }
+
+        .main-content .content-title {
+            font-size: 2rem;
+        }
+
+
+        .main-content .content-element {
+            font-size: 1.4rem;
+        }
+
+    .main-imgs img {
+        width: 55rem;
+        height: 55rem;
+    }
+
+
+
+    .form-group select option {
+        font-size: 1.2rem;
+    }
+
+    .form-group select {
+        width: 100%;
+        height: 37px;
+        font-size: 13px;
+        border: 1px solid #b3b3b3;
+        text-align: center;
+        border-radius: 5px;
+    }
+
+    .group-display {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+        .group-display div {
+            display: flex;
+            flex-direction: column;
+        }
+    .userName h4{
+        font-size:1.3rem;
+    }
+
+    textarea {
+        min-height: 30rem;
+    }
+    /* Details BLog */
+    .blog-body-details {
+        margin-bottom: 20rem;
+    }
+    .blog-body-details .title-header {
+        text-transform: uppercase;
+        font-size: 2rem;
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .blog-body-details span {
+       display: flex;
+       justify-content: center;
+    }
+
+        .blog-body-details span img {
+            max-width: 70rem;
+        }
+
+        .blog-body-details p {
+            padding-top: 4rem;
+            font-size: 1.5rem;
+            line-height: 2;
+        }
+
+        .show {
+            display: block;
+        }
+    .ul-div-thongke {
+        margin-top: -1.8rem;
+        display: none;
+    }
+    .ul-a-thongke {
+        margin-left: 7.3rem;
+        height: 4rem;
+    }
+    .ul-thongke {
+        font-size: 1.6rem;
+    }
+
+</style>
+<body>
+    <div id="toast">
+    </div>
+    <!-- =============== Navigation ================ -->
+    <div class="container">
+        <div class="navigation" style="overflow:auto !important;">
+            <ul>
+                <li style="padding-top: 1.5rem;">
+                    <a href="#">
+                        <span class="icon">
+                            <img src="~/Areas/Admin/assets/imgs/logo.svg" alt="">
+                        </span>
+                        <span style="font-size: 3rem;" class="title">Groco</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="~/Admin/Home/Index">
+                        <span class="icon">
+                            <ion-icon name="home-outline"></ion-icon>
+                        </span>
+                        <span class="title">Trang chủ</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="~/Admin/Category/Index">
+                        <span class="icon">
+                            <ion-icon name="reorder-four-outline"></ion-icon>
+                        </span>
+                        <span class="title">Q.lý danh mục</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="~/Admin/Supplier/Index">
+                        <span class="icon">
+                            <ion-icon name="storefront-outline"></ion-icon>
+                        </span>
+                        <span class="title">Q.lý nhà sản xuất</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="~/Admin/Product/Index">
+                        <span class="icon">
+                            <ion-icon name="nutrition-outline"></ion-icon>
+                        </span>
+                        <span class="title">Q.lý sản phẩm</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="~/Admin/User/Index">
+                        <span class="icon">
+                            <ion-icon name="people-outline"></ion-icon>
+                        </span>
+                        <span class="title">Q.lý người dùng</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="~/Admin/Contact/Index">
+                        <span class="icon">
+                            <ion-icon name="chatbubble-outline"></ion-icon>
+                        </span>
+                        <span class="title">Q.lý liên hệ</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="~/Admin/Blog/Index">
+                        <span class="icon">
+                            <ion-icon name="clipboard-outline"></ion-icon>
+                        </span>
+                        <span class="title">Q.lý bài viết</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="~/Admin/Order/Index">
+                        <span class="icon">
+                            <ion-icon name="cart-outline"></ion-icon>
+                        </span>
+                        <span class="title">Q.lý Đơn hàng</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="~/Admin/Statistical/Index">
+                        <span class="icon">
+                            <ion-icon name="bar-chart-outline"></ion-icon>
+                        </span>
+                        <span class="title">Thống kê</span>
+                    </a>
+                    
+                   
+                </li>
+
+                <li>
+                    <a href="~/Admin/Auth/Logout">
+                        <span class="icon">
+                            <ion-icon name="log-out-outline"></ion-icon>
+                        </span>
+                        <span class="title">Đăng Xuất</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- ========================= Main ==================== -->
+        <div class="main">
+            <div class="topbar">
+                <div class="toggle">
+                    <ion-icon name="menu-outline"></ion-icon>
+                </div>
+
+
+
+                @{
+                    if (Session["avatar"] != null)
+                    {
+                        <div class="userName">
+                            <h4>Chào mừng người dùng @Session["adminName"]</h4>
+                        </div>
+                        <div class="user">
+                            <img src="~/Areas/Admin/Image/@Session["avatar"]" alt="">
+                        </div>
+                    }
+                }
+            </div>
+
+            @RenderBody()
+
+
+
+        </div>
+    </div>
+
+
+
+
+    <!-- =========== Scripts =========  -->
+    <script src="~/Areas/Admin/assets/js/main.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+    <!-- ====== ionicons ======= -->
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+
+
+</body>
+</html>
+<script>
+    function showDelete(e, str) {
+        e.preventDefault();
+        var deleteUrl = $("#delete-link").attr("href");
+        swal({
+            title: "Xác nhận xóa ?",
+            text: `Bạn chắc chắn muốn xóa ${str} không ?`,
+            icon: "warning",
+            buttons: {
+                cancel: {
+                    text: "Không",
+                    value: null,
+                    visible: true,
+                    className: "",
+                    closeModal: true,
+                },
+                confirm: {
+                    text: "Có",
+                    value: true,
+                    visible: true,
+                    className: "",
+                    closeModal: true
+                }
+            }
+        }).then((willDelete) => {
+            if (willDelete) {
+                window.location.href = deleteUrl;
+            }
+        });
+    }
+
+
+
+    //Toast
+    function toast({
+        title = '',
+        message = '',
+        type = 'info',
+        duration = 0
+    }) {
+        const main = document.getElementById('toast');
+        if (main) {
+            const toast = document.createElement('div');
+
+
+            //auto remove toast
+            const autoRemoveId = setTimeout(function () {
+                main.removeChild(toast);
+            }, duration + 1000);
+            //remove toast when clicked
+            toast.onclick = function (e) {
+                if (e.target.closest('.toast__close')) {
+                    main.removeChild(toast);
+                    clearTimeout(autoRemoveId);
+                }
+            }
+
+            const icons = {
+                success: 'fa-sharp fa-solid fa-check',
+                info: 'fa-solid fa-info',
+                warn: 'fa-sharp fa-solid fa-exclamation',
+                error: 'fa-sharp fa-solid fa-exclamation',
+            };
+
+            const icon = icons[type];
+            const delay = (duration / 1000).toFixed(2);
+
+            toast.classList.add('toast', `toast--${type}`);
+            toast.style.animation = `slideInLeft ease .6s, FadeOut linear 1s ${delay}s forwards`;
+            toast.innerHTML = `
+        <div class="toast__icon">
+            <i class="${icon}"></i>
+        </div>
+        <div class="toast__body">
+            <h3 class="toast__title">${title}</h3>
+            <p class="toast__msg">${message}</p>
+        </div>
+        <div class="toast__close">
+            <i class="fa-solid fa-xmark"></i>
+        </div
+        `;
+            main.appendChild(toast);
+
+        }
+    }
+
+    function showSuccessCreate(str1, str2) {
+        toast({
+            title: 'Thành công !!',
+            message: 'Bạn đã ' + str1 + ' thành công 1 ' + str2 + '',
+            type: 'success',
+            duration: 2000
+        });
+
+    }
+
+    function showErrorCreate() {
+        toast({
+            title: 'Thất bại !!',
+            message: 'Có lỗi trong lúc thêm',
+            type: 'error',
+            duration: 1500
+        });
+
+    }
+
+
+    //Hàm reset form
+    function resetForm(form) {
+        // Lặp qua tất cả các trường nhập trong form và xóa giá trị
+        $(form).find(':input').each(function () {
+            switch (this.type) {
+                case 'password':
+                case 'select-one':
+                case 'select-multiple':
+                case 'text':
+                case 'textarea':
+                case 'tel':
+                case 'number':
+                case 'email':
+                case 'file':
+                    $(this).val('');
+                    break;
+                case 'checkbox':
+                case 'radio':
+                    this.checked = false;
+            }
+        });
+
+        // Đặt lại trường img về giá trị mặc định (đường dẫn hình ảnh ban đầu)
+        var imgField = $(form).find('img');
+        if (imgField.length > 0) {
+            imgField.attr('src', '/Areas/Admin/Image/imagePreview.jpg'); // Thay 'duong-dan-hinh-anh-mac-dinh.jpg' bằng đường dẫn hình ảnh mặc định của bạn
+        }
+
+        // Tìm trường nhập đầu tiên trong form
+        var firstInput = $(form).find(':input:first');
+
+        if (firstInput.length > 0) {
+            firstInput.val(''); // Xóa giá trị trường đầu tiên (nếu muốn)
+            firstInput.focus(); // Đặt focus lên trường nhập đầu tiên
+        }
+    }
+
+    //Hàm lấy Alias
+    function getAlias(title) {
+        return title.toLowerCase().trim()// chuyển chuỗi sang chữ thường và loại bỏ khoảng trông ở đầu và cuối;
+            .replace(/à|á|ả|ã|ạ|ă|ắ|ằ|ẳ|ẵ|ặ|â|ấ|ầ|ẩ|ẫ|ậ|ā|ą|å|α|ά|ἀ|ἁ|ἂ|ἃ|ἄ|ἅ|ἆ|ἇ|ᾀ|ᾁ|ᾂ|ᾃ|ᾄ|ᾅ|ᾆ|ᾇ|ὰ|ά|ᾰ|ᾱ|ᾲ|ᾳ|ᾴ|ᾶ|ᾷ|а|أ|အ|ာ|ါ|ǻ|ǎ|ª|ა|अ|ا/g, "a")
+            .replace(/\ /g, '-').replace(/đ/g, "d")
+            .replace(/ý|ỳ|ỷ|ỹ|ỵ|ÿ|ŷ|й|ы|υ|ϋ|ύ|ΰ|ي|ယ/g, "y")
+            .replace(/ú|ù|ủ|ũ|ụ|ư|ứ|ừ|ử|ữ|ự|û|ū|ů|ű|ŭ|ų|µ|у|ဉ|ု|ူ|ǔ|ǖ|ǘ|ǚ|ǜ|უ|उ/g, "u")
+            .replace(/ó|ò|ỏ|õ|ọ|ô|ố|ồ|ổ|ỗ|ộ|ơ|ớ|ờ|ở|ỡ|ợ|ø|ō|ő|ŏ|ο|ὀ|ὁ|ὂ|ὃ|ὄ|ὅ|ὸ|ό|о|و|θ|ို|ǒ|ǿ|º|ო|ओ/g, "o")
+            .replace(/é|è|ẻ|ẽ|ẹ|ê|ế|ề|ể|ễ|ệ|ë|ē|ę|ě|ĕ|ė|ε|έ|ἐ|ἑ|ἒ|ἓ|ἔ|ἕ|ὲ|έ|е|ё|э|є|ə|ဧ|ေ|ဲ|ე|ए|إ|ئ/g, "e")
+            .replace(/í|ì|ỉ|ĩ|ị|î|ï|ī|ĭ|į|ı|ι|ί|ϊ|ΐ|ἰ|ἱ|ἲ|ἳ|ἴ|ἵ|ἶ|ἷ|ὶ|ί|ῐ|ῑ|ῒ|ΐ|ῖ|ῗ|і|ї|и|ဣ|ိ|ီ|ည်|ǐ|ი|इ/g, "i")
+            .replace(/\s+/g, '-')
+            .replace(/&/g, '-va-')
+            .replace(/[^\w\-]+/g, '')
+            .replace(/\-\-+/g, '-')
+    }
+
+</script>
+
+@Scripts.Render("~/bundles/jquery")
+@RenderSection("scripts", required: false)
+@RenderSection("scripts1", required: false)

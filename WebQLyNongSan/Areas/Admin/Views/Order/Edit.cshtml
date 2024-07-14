@@ -1,0 +1,28 @@
+﻿@model WebQLyNongSan.Models.OrderTable
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="main-form">
+    <form action="~/Admin/Order/Edit/@Model.id" method="post" class="form js-form animate" id="form-1" enctype="multipart/form-data">
+        <div class="modal-comback">
+            <a href="~/Admin/Order/Index"> <i class="fa-solid fa-arrow-left"></i> Quay lại</a>
+        </div>
+        <h3 class="heading">Chỉnh sửa trạng thái đơn hàng</h3>
+
+        <div class="spacer"></div>
+
+        <div class="form-group">
+            <label for="Name" class="form-label">Trạng thái</label>
+            <select id="StransactStatusId" name="StransactStatusId">
+                @foreach (var item in new WebQLyNongSan.Models.QLyNongSanEntities2().TransActStatus.ToList())
+                {
+                    <option value="@item.id" @Html.Raw(item.id == Model.StransactStatusId? "selected" : "")>@item.Status</option>
+                }
+            </select>
+        </div>
+
+        <button type="submit" class="form-submit">Chỉnh sửa</button>
+    </form>
+</div>

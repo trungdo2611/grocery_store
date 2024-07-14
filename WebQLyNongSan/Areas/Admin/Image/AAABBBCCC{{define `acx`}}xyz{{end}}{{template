@@ -1,0 +1,1 @@
+AAABBBCCC{{define `acx`}}xyz{{end}}{{template "acx"}}CCCBBBAAA

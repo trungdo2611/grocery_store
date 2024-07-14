@@ -1,0 +1,425 @@
+﻿@model WebQLyNongSan.Models.ProductDetailViewModel
+
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    WebQLyNongSan.Models.QLyNongSanEntities2 db = new WebQLyNongSan.Models.QLyNongSanEntities2();
+    var loaiDM = db.Categories.Find(Model.DetailsModel.CategoryId);
+    var loaiNSX = db.Suppliers.Find(Model.DetailsModel.supplierId);
+}
+
+<div class="heading">
+    <h1>Shop</h1>
+    <p><a href="~/Home/Index">Trang chủ >></a> <a href="~/Shop/Home">shop>></a> Chi tết @Model.DetailsModel.Name</p>
+</div>
+
+<div class="card-wrapper">
+    <div class="card">
+        <!--card left  -->
+        <div class="product-imgs">
+            <div class="img-display">
+                <div class="img-showcase">
+                    <img src="~/Areas/Admin/Image/@Model.DetailsModel.Picture" alt="san-pham">
+                </div>
+            </div>
+        </div>
+
+        <!-- card right -->
+        <div class="product-content">
+            <h2 class="product-title">@Model.DetailsModel.Name</h2>
+            <a href="~/Shop/Index" class="product-link">ghé shop ngay</a>
+            <div class="product-rating">
+
+                @if (Model.StarAverage == null)
+                {
+                    <i class="far fa-star"></i>
+                    <i class="far fa-star"></i>
+                    <i class="far fa-star"></i>
+                    <i class="far fa-star"></i>
+                    <i class="far fa-star"></i>
+                    <span> 0/5</span>
+                }
+                else
+                {
+                    for (var i = 0; i < Model.StarAverage; i++)
+                    {
+                        <i class="fas fa-star"></i>
+                    }
+                    for (var i = (Model.StarAverage + 1); i <= 5; i++)
+                    {
+                        <i class="far fa-star"></i>
+                    }
+                    <span> @Model.StarAverage/5</span>
+                }
+
+            </div>
+
+            <div class="product-price">
+                <p class="last-price">Gía : <span>@string.Format("{0:#,0}", Model.DetailsModel.Price) VNĐ</span></p>
+            </div>
+
+            <div class="product-detail">
+                <h2>Mô tả:</h2>
+                <p>
+                    @Model.DetailsModel.ShortDesc
+                </p>
+                <ul>
+                    <li>Tồn kho : <span>@string.Format("{0:#,0}", Model.DetailsModel.UnitStock)</span></li>
+                    @{
+                        if (Model.DetailsModel.UnitStock > 0)
+                        {
+                            <li>Trạng thái : <span>Còn hàng</span></li>
+                        }
+                        else
+                        {
+                            <li>Trạng thái : <span>Hết hàng</span></li>
+                        }
+                        if (loaiDM != null || loaiNSX != null)
+                        {
+                            <li>Loại : <span>@loaiDM.Name</span></li>
+                            <li>Nhà phân phối : <span>@loaiNSX.Name</span></li>
+                        }
+                    }
+
+
+                </ul>
+            </div>
+
+            <div class="purchase-info">
+                <input id="quantity-value" type="number" min="0" value="1">
+
+                @{
+                    if (Model.DetailsModel.UnitStock > 0)
+                    {
+                        <button type="button" class="btn btnAddCart" data-id="@Model.DetailsModel.id">
+                            Thêm vào giỏ <i class="fas fa-shopping-cart"></i>
+                        </button>
+                    }
+                    else
+                    {
+                        <button onclick="soldOut()" type="button" class="btn">
+                            Thêm vào giỏ <i class="fas fa-shopping-cart"></i>
+                        </button>
+                    }
+                }
+
+                @{
+                    if (Session["userId"] == null)
+                    {
+                        <button onclick="checkLogin()" type="button" class="btn">
+                            Yêu thích <i class="fa-solid fa-heart"></i>
+                        </button>
+
+                    }
+                    else
+                    {
+                        var userId = (int)(Session["userId"]);
+                        var wishlist = db.WishLists.FirstOrDefault(x => x.ProductID == Model.DetailsModel.id && x.UserID == userId);
+                        var isWishlist = false;
+                        if (wishlist != null)
+                        {
+                            isWishlist = true;
+                        }
+
+                        if (isWishlist == true)
+                        {
+                            <button data-id="@Model.DetailsModel.id" type="button" class="btn favorite activeHeart">
+                                đã Yêu thích <i class="fa-solid fa-heart"></i>
+                            </button>
+                        }
+                        else
+                        {
+                            <button data-id="@Model.DetailsModel.id" type="button" class="btn favorite">
+                                Yêu thích <i class="fa-solid fa-heart"></i>
+                            </button>
+                        }
+                    }
+
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="tab_container">
+    <div class="tab_box">
+        <button class="tab_btn">Mô tả chi tiết</button>
+        <button class="tab_btn">Nhà sản xuất</button>
+        <button class="tab_btn">Đánh giá</button>
+        <div class="line"></div>
+    </div>
+    <div class="tab_content-box">
+        <div class="tab_content">
+            <h2>@Model.DetailsModel.Name</h2>
+            <p>@Model.DetailsModel.FullDesc</p>
+        </div>
+
+        <div class="tab_content">
+            <h2>Nhà sản xuất</h2>
+            <p>Tên: @loaiNSX.Name</p>
+            <p>Số điện thoại : @loaiNSX.Phone</p>
+            <p>Địa chỉ: @loaiNSX.Address</p>
+        </div>
+
+        <div class="tab_content">
+            <div id="comment__display">
+
+
+            </div>
+
+            <div class="wrapper_rating">
+                <h2>Viết đánh giá sản phẩm</h2>
+                <form id="form-rating" action="~/Review/CreateComment" method="post">
+                    <input id="ProductID" type="hidden" name="ProductID" @*value="@Model.DetailsModel.id"*@ data-id="@Model.DetailsModel.id" />
+                    <div class="rating">
+                        <input id="Rating" class="rating-value" type="number" name="Rating" hidden>
+                        <i class="far fa-star star" style="--i: 0;"></i>
+                        <i class="far fa-star star" style="--i: 1;"></i>
+                        <i class="far fa-star star" style="--i: 2;"></i>
+                        <i class="far fa-star star" style="--i: 3"></i>
+                        <i class="far fa-star star" style="--i: 4;"></i>
+                    </div>
+                    <textarea style="text-transform: none" name="Comment" id="Comment" cols="30" rows="5" placeholder="Viết đánh giá..."></textarea>
+                    @if (Session["userId"] == null)
+                    {
+                        <a onclick="warnRating()" class="btn">Đăng bài</a>
+
+                    }
+                    else
+                    {
+                        <button id="btnRating" type="button" class="btn">Đăng bài</button>
+                    }
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<section id="category__products" class="best-sale-products">
+    <h1 class="title">
+        <span>
+            Sản phẩm tương tự
+        </span>
+    </h1>
+
+    <div class="box-container">
+        @if (Model.RelatedProducts.Any())
+        {
+            foreach (var item in Model.RelatedProducts)
+            {
+                <div class="box">
+                    <div class="icons">
+                        @{
+                            if (item.UnitStock > 0)
+                            {
+                                <a href="" class="fas fa-shopping-cart btnAddCart" data-id="@item.id"></a>
+                            }
+                            else
+                            {
+                                <a onclick="soldOut()" class="fas fa-shopping-cart"></a>
+                            }
+
+                            if (Session["userId"] == null)
+                            {
+                                <a onclick="checkLogin()" class="fas fa-heart"></a>
+
+                            }
+                            else
+                            {
+                                var userId = (int)(Session["userId"]);
+                                var wishlist = db.WishLists.FirstOrDefault(x => x.ProductID == item.id && x.UserID == userId);
+                                var isWishlist = false;
+                                if (wishlist != null)
+                                {
+                                    isWishlist = true;
+                                }
+                                if (isWishlist == true)
+                                {
+                                    <a data-id="@item.id" class="fas fa-heart favorite activeHeart"></a>
+                                }
+                                else
+                                {
+                                    <a data-id="@item.id" class="fas fa-heart favorite"></a>
+                                }
+
+                            }
+                        }
+
+                        <a href="~/Shop/Detail/@item.id" class="fas fa-eye"></a>
+                    </div>
+                    <div class="image">
+                        <img src="~/Areas/Admin/Image/@item.Picture" alt="">
+                    </div>
+                    <div class="content">
+                        <h3>@item.Name</h3>
+                        <div class="price">@string.Format("{0:#,0}", item.Price) VNĐ</div>
+                        <div class="stars">
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <p class="p__search">Không có sản phẩm tương tự nào</p>
+        }
+
+
+    </div>
+
+</section>
+
+@section scripts {
+
+    @if (TempData["errorRating"] != null)
+    {
+        <script>
+            swal({
+                title: "Lỗi đánh giá",
+                text: 'Bạn phải đăng nhập để sử dụng chức năng này',
+                icon: "warning",
+            });
+        </script>
+    }
+<script>
+        $(document).ready(function () {
+            getComment(@Model.DetailsModel.id);
+
+            //đăng bình luận
+            $('#btnRating').click(function () {
+                if ($("#Rating").val() == 0) {
+                    swal({
+                        title: "Lỗi đánh giá",
+                        text: 'Bạn phải đánh giá ít nhất một sao để đăng bình luận',
+                        icon: "warning",
+                    });
+                    return false;
+                }
+                else {
+                    var id = $("#ProductID").data('id');
+                    createRating(id);
+                    return true;
+                }
+
+            });
+        });
+
+        function getComment(idproduct) {
+            $.ajax({
+                url: "/Review/PartialIndexReview",
+                type: 'Get',
+                data: { id: idproduct },
+                success: function (data) {
+                    $("#comment__display").empty().append(data);
+                },
+                error: function (xhr, status, error) {
+                    alert(xhr.responseText);
+                }
+            })
+        }
+
+    function createRating(id) {
+        var rating = $('#Rating').val();
+        var comment = $('#Comment').val();
+        var productid = id;   
+        var formData = {}
+        
+        formData.Rating = rating;
+        formData.Comment = comment;
+        formData.ProductID = productid;
+        $.ajax({
+            type: 'POST',
+            url: '/Review/CreateComment',
+            contentType: false,
+            processData: false,
+            data: JSON.stringify(formData),
+            contentType: 'application/json',
+             success: function (response) {
+                    if (response.Success) {
+                        toast({
+                            title: 'Thành công !!',
+                            message: 'Bạn đã đăng bình luận thành công',
+                            type: 'success',
+                            duration: 2000
+                        });
+                        resetForm(document.getElementById("form-rating"));
+                        getComment(@Model.DetailsModel.id);
+                        resetRating();
+                   }
+
+                },
+                error: function (error) {
+                    showErrorCreate();
+                }
+            })
+    }
+
+
+        function warnRating() {
+            swal({
+                title: "Lỗi đánh giá",
+                text: 'Bạn phải đăng nhập để sử dụng chức năng này',
+                icon: "warning",
+            });
+        }
+</script>
+
+}
+
+<script>
+    //Tab js
+    const tabs = document.querySelectorAll('.tab_btn');
+    const all_content = document.querySelectorAll('.tab_content');
+
+
+    tabs.forEach((tab, index) => {
+        tab.addEventListener('click', (e) => {
+            tabs.forEach(tab => { tab.classList.remove('activeTab') });
+            tab.classList.add('activeTab');
+            var line = document.querySelector('.line');
+            line.style.width = e.target.offsetWidth + "px";
+            line.style.left = e.target.offsetLeft + "px";
+
+            all_content.forEach(content => { content.classList.remove('activeContent') });
+            all_content[index].classList.add('activeContent');
+        })
+    })
+
+
+    //Rating js
+    const allStar = document.querySelectorAll('.rating .star');
+    const ratingValue = document.querySelector('.rating-value');
+    allStar.forEach((item, index) => {
+        item.addEventListener('click', function () {
+            var click = 0;
+            ratingValue.value = index + 1;
+            console.log(ratingValue.value);
+            allStar.forEach(i => {
+                i.classList.replace('fas', 'far');
+                i.classList.remove('activeStar');
+            })
+            for (let i = 0; i < allStar.length; i++) {
+                if (i <= index) {
+                    allStar[i].classList.replace('far', 'fas');
+                    allStar[i].classList.add('activeStar');
+                } else {
+                    allStar[i].style.setProperty('--i', click);
+                    click++;
+                }
+            }
+        })
+    })
+
+    function resetRating() {
+        ratingValue.value = 0; // Đặt giá trị đánh giá về 0
+        allStar.forEach(item => {
+            item.classList.replace('fas', 'far');
+            item.classList.remove('activeStar');
+        });
+    }
+</script>
+

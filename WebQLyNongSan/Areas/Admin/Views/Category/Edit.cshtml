@@ -1,0 +1,78 @@
+﻿@model WebQLyNongSan.Models.Category
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="main-form">
+    <form action="~/Admin/Category/Edit/@Model.id" method="post" class="form js-form animate" id="form-1" enctype="multipart/form-data">
+        <div class="modal-comback">
+            <a href="~/Admin/Category/Index"> <i class="fa-solid fa-arrow-left"></i> Quay lại</a>
+        </div>
+        <h3 class="heading">Chỉnh sửa Danh Mục</h3>
+
+        <div class="spacer"></div>
+
+        <div class="form-group">
+            <label for="Name" class="form-label">Tên danh mục</label>
+            <input id="Name" name="Name" value="@Model.Name" type="text" placeholder="VD: Nông sản" class="form-control">
+            <span class="form-message"><label class="error" for="Name"></label></span>
+        </div>
+
+        <div class="form-group">
+            <label for="Alias" class="form-label">Alias</label>
+            <input id="Alias" name="Alias" value="@Model.Alias" type="text" placeholder="VD: nong-san" class="form-control">
+            <span class="form-message"><label class="error" for="Alias"></label></span>
+        </div>
+
+
+        <div class="form-group">
+            <label for="Picture" class="form-label">Hình ảnh</label>
+            <img src="~/Areas/Admin/Image/@Model.Picture" style="margin: 1rem; height: auto; width: 20rem" id="imagePreview" alt="Alternate Text" />
+            <input id="Picture" value="@Model.Picture" name="Picture" type="file" class="form-control" accept="image/jpeg, image/png" onchange="showImagePreview(this, document.getElementById('imagePreview'))">
+            <span class="form-message"><label class="error" for="Picture"></label></span>
+        </div>
+
+        <button type="submit" class="form-submit">Chỉnh sửa</button>
+    </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            //Sự kiện nhập của text tên sản phẩm
+            $('#Name').keypress(function () {
+                $('#Alias').val(getAlias($(this).val()));
+            });
+
+            //Setting validation
+            $('#form-1').validate({
+                rules: {
+                    Name: {
+                        required: true,
+                        minlength: 3
+                    },
+                    Alias: "required",
+                },
+                messages: {
+                    Name: {
+                        required: "Bạn phải nhập tên",
+                        minlength: "Tên phải có độ dài tối thiểu 3 ký tự"
+                    },
+                    Alias: "Bạn phải nhập Alias",
+                }
+            });
+
+
+        });
+
+    </script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+}
+
+
+
+

@@ -1,0 +1,53 @@
+﻿@model WebQLyNongSan.Models.UserTable
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    WebQLyNongSan.Models.QLyNongSanEntities2 db = new WebQLyNongSan.Models.QLyNongSanEntities2();
+}
+
+<div class="details">
+    <div class="tableData">
+        <div class="cardHeader form-index">
+            <h2>Chi tiết tài khoản @Model.UserName</h2>
+        </div>
+
+        <div class="card-wrapper">
+            <div class="card">
+
+
+                <!-- card left -->
+                <div class="main-content">
+                    <h2 class="content-title">@Model.UserName</h2>
+                    <div class="content-element">
+                        <p class="last-price">Họ tên : <span>@Model.FullName</span></p>
+                        <p class="last-price">Mật khẩu: <span>@Model.PassWord</span></p>
+                        @{
+                            var loaiRole = db.Roles.Find(Model.RoleID);
+                          
+                            if (loaiRole != null)
+                            {
+                                <p class="last-price">Danh mục: <span>@loaiRole.Name</span></p>                      
+                            }
+                        }
+
+                        <p class="last-price">Email: <span>@Model.Email</span></p>
+                        <p class="last-price">Địa chỉ: <span>@Model.Address</span></p>
+                        <p class="last-price">Số điện thoại: <span>@Model.Phone</span></p>
+                        <p class="last-price">Active: <span>@Html.Raw(Model.Active == true ? "Bật" : "Không")</span></p>
+                      
+                    </div>
+                </div>
+
+                <!--card right  -->
+                <div class="main-imgs">
+                    <img style="border-radius:50%" src="~/Areas/Admin/Image/@Model.avatar" alt="san-pham">
+                </div>
+            </div>
+        </div>
+        <div class="btn-deltails">
+            <a class="btn-Edit-Details" href="~/Admin/User/Edit/@Model.ID">Chỉnh sửa</a>
+            <a class="btn-Back-Details" href="~/Admin/User/Index">Quay lại</a>
+        </div>
+    </div>
+</div>

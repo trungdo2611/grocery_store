@@ -1,0 +1,55 @@
+﻿@model WebQLyNongSan.Models.Product
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    WebQLyNongSan.Models.QLyNongSanEntities2 db = new WebQLyNongSan.Models.QLyNongSanEntities2();
+}
+
+<div class="details">
+    <div class="tableData">
+        <div class="cardHeader form-index">
+            <h2>Chi tiết sản phẩm @Model.Name</h2>
+        </div>
+
+        <div class="card-wrapper">
+            <div class="card">
+
+
+                <!-- card left -->
+                <div class="main-content">
+                    <h2 class="content-title">@Model.Name</h2>
+                    <div class="content-element">
+                        <p class="last-price">Tên Alias: <span>@Model.Alias</span></p>
+                        <p class="last-price">Mô tả: <span>@Model.ShortDesc</span></p>
+                        @{
+                            var loaiDM = db.Categories.Find(Model.CategoryId);
+                            var loaiNSX = db.Suppliers.Find(Model.supplierId);
+                            if (loaiDM != null || loaiNSX != null)
+                            {
+                                <p class="last-price">Danh mục: <span>@loaiDM.Name</span></p>
+                                <p class="last-price">Nhà sản xuất: <span>@loaiNSX.Name</span></p>
+                            }
+                        }
+
+                        <p class="last-price">Mô tả chi tiết: <span>@Model.FullDesc</span></p>
+                        <p class="last-price">Giá bán: <span>@Model.Price</span></p>
+                        <p class="last-price">Chi phí nhập: <span>@Model.Cost</span></p>
+                        <p class="last-price">Tồn kho: <span>@Model.UnitStock</span></p>
+                        <p class="last-price">Gắn lên trang chủ: <span>@Html.Raw(Model.HomeFlag == true ? "Có" : "Không")</span></p>
+                        <p class="last-price">Gắn thẻ bán chạy: <span>@Html.Raw(Model.BestSeller == true ? "Có" : "Không")</span></p>
+                    </div>
+                </div>
+
+                <!--card right  -->
+                <div class="main-imgs">
+                    <img src="~/Areas/Admin/Image/@Model.Picture" alt="san-pham">
+                </div>
+            </div>
+        </div>
+        <div class="btn-deltails">
+            <a class="btn-Edit-Details" href="~/Admin/Product/Edit/@Model.id">Chỉnh sửa</a>
+            <a class="btn-Back-Details" href="~/Admin/Product/Index">Quay lại</a>
+        </div>
+    </div>
+</div>

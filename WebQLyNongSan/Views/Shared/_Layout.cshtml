@@ -1,0 +1,507 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="icon" type="image/x-icon" href="~/assets/img/logo Trung 1.svg">
+    <link href="~/assets/css/style.css" rel="stylesheet" />
+    <link href="~/assets/css/grid.css" rel="stylesheet" />
+    <link href="~/assets/css/toast.css" rel="stylesheet" />
+</head>
+
+<style>
+    .error {
+        color: #f33a58;
+    }
+
+    .activeHeart {
+        background: #bac34e !important;
+        color: #fff !important;
+    }
+
+    .modal-comback {
+        position: absolute;
+        left: -4px;
+        top: 0;
+        padding: 12px;
+        cursor: pointer;
+        opacity: 0.8;
+        font-size: 1.4rem;
+    }
+
+        .modal-comback:hover {
+            color: #bac34e;
+        }
+
+        .modal-comback a {
+            text-decoration: none;
+            color: var(--black2);
+            padding-left: 0.5rem;
+            margin-bottom: 3rem;
+        }
+
+    .main {
+        background: #f1f1f1;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        margin-top: 8rem;
+    }
+
+    .form {
+        width: 500px;
+        min-height: 100px;
+        padding: 32px 24px;
+        text-align: center;
+        background: #fff;
+        border-radius: 2px;
+        margin: 24px;
+        align-self: center;
+        box-shadow: 0 2px 5px 0 rgba(51, 62, 73, 0.1);
+        position: relative;
+    }
+
+        .form .heading__Register {
+            font-size: 2rem;
+        }
+
+        .form .desc {
+            text-align: center;
+            color: #636d77;
+            font-size: 1.6rem;
+            font-weight: lighter;
+            line-height: 2.4rem;
+            margin-top: 16px;
+            font-weight: 300;
+        }
+
+    .form-group {
+        display: flex;
+        margin-bottom: 16px;
+        flex-direction: column;
+    }
+
+
+
+    .form-label,
+    .form-message {
+        text-align: left;
+    }
+
+    .form-label {
+        font-weight: 700;
+        padding-bottom: 6px;
+        line-height: 1.8rem;
+        font-size: 1.4rem;
+    }
+
+    .form-control {
+        height: 40px;
+        padding: 8px 12px;
+        border: 1px solid #b3b3b3;
+        border-radius: 3px;
+        outline: none;
+        font-size: 1.4rem;
+    }
+
+        .form-control:hover {
+            border-color: #1dbfaf;
+        }
+
+    .form-group.invalid .form-control {
+        border-color: #f33a58;
+    }
+
+    .form-group.invalid .form-message {
+        color: #f33a58;
+    }
+
+    .form-message {
+        font-size: 1.2rem;
+        line-height: 1.6rem;
+        padding: 4px 0 0;
+    }
+
+    .form-submit {
+        outline: none;
+        background-color: #1dbfaf;
+        margin-top: 12px;
+        padding: 12px 16px;
+        font-weight: 600;
+        color: #fff;
+        border: none;
+        width: 100%;
+        font-size: 14px;
+        border-radius: 8px;
+        cursor: pointer;
+    }
+
+        .form-submit:hover {
+            background-color: #1ac7b6;
+        }
+
+    .spacer {
+        margin-top: 36px;
+    }
+
+    .p__stock {
+        font-size: 1.3rem;
+        color: #222;
+        padding-top: .4rem;
+    }
+
+    .p__search {
+        font-size: 1.6rem;
+        color: #000;
+    }
+
+    /*Phân trang cho pagelist*/
+    .pagination-container {
+        display: flex;
+        justify-content: center;
+    }
+
+    .header .icons {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .user__wrapper {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+    }
+
+    .img__User {
+        width: 3.2rem;
+        height: 3.2rem;
+        border-radius: 50%;
+    }
+
+    .name__User {
+        font-size: 1.1rem;
+    }
+
+        .name__User i {
+            font-size: 1.2rem;
+        }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #fff;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        border-radius: 1.4rem;
+        z-index: 1;
+        top: 5rem;
+    }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            font-size: 1.2rem;
+            display: block;
+        }
+
+            .dropdown-content a:hover {
+                background-color: #ddd;
+            }
+
+    .show {
+        display: block;
+    }
+
+    /*Css cắt ngắn văn bản*/
+    .p_Desc {
+        padding-top: 3rem !important;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 3;
+        display: -webkit-box;
+        overflow: hidden;
+        line-height: 2.5 !important;
+    }
+
+    /* Details BLog */
+    .blog-body-details {
+        margin-bottom: 20rem;
+    }
+
+        .blog-body-details .title-header {
+            text-transform: uppercase;
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .blog-body-details span {
+            display: flex;
+            justify-content: center;
+        }
+
+            .blog-body-details span img {
+                max-width: 70rem;
+            }
+
+        .blog-body-details p {
+            padding-top: 4rem;
+            font-size: 1.5rem;
+            line-height: 2;
+        }
+
+    .shopping-cart--display {
+        max-height: 300px;
+        overflow: auto;
+    }
+</style>
+
+<body>
+    <div id="toast">
+    </div>
+    <!-- header section starts -->
+    <header class="header">
+        <!-- <a href="index.html" class="logo"><i class="fas fa-shopping-basket"></i>groco</a> -->
+        <a href="~/Home/Index" class="logo"><img src="~/assets/img/logo Trung 1.svg" alt="">groco</a>
+        <nav class="navbar">
+            <a href="~/Home/Index">trang chủ</a>
+            <a href="~/Shop/home">shop</a>
+            <a href="~/About/Index">about</a>
+            <a href="~/Review/Index">reivew</a>
+            <a href="~/Blog/Index">blog</a>
+            <a href="~/Contact/Index">contact</a>
+        </nav>
+
+        <div class="icons">
+            <div id="menu-btn" class="fas fa-bars"></div>
+            <div id="search-btn" class="fas fa-search"></div>
+            <div id="cart-btn" class="fas fa-shopping-cart"><span class="count__cart">(<i class="count__item">0</i>)</span></div>
+            @{
+                if (Session["userId"] == null)
+                {
+                    <div id="login-btn" class="fas fa-user"></div>
+                }
+                else
+                {
+                    <div class="user__wrapper">
+                        <img id="dropbtn" onclick="dropdownUser()" class="img__User" src="~/Areas/Admin/Image/@Session["avatarUser"]" alt="Alternate Text" />
+                        <p id="dropbtn" onclick="dropdownUser()" class="name__User">@Session["userName"] <i class="fa-solid fa-caret-down"></i></p>
+                        <div id="myDropdown" class="dropdown-content">
+                            <a href="~/Auth/EditProfile/@Session["userId"]">Chỉnh sửa thông tin</a>
+                            <a href="~/Auth/ChangePassword">Đổi mật khẩu</a>
+                            <a href="~/Wishlist/Index">sản phẩm ưa thích</a>
+                            <a href="~/Home/Logout">Đăng xuất</a>
+                        </div>
+                    </div>
+                }
+            }
+
+        </div>
+
+        <form action="~/Shop/Index" method="get" class="search-form">
+            <input name="searchString" value="@ViewBag.currentFilter" type="search" placeholder="Tìm kiếm ở đây..." id="search-box">
+            <button type="submit" for="search-box" class="fas fa-search"></button>
+        </form>
+
+        <div class="shopping-cart">
+            <div class="shopping-cart--display"> <p style="font-size: 1.3rem;">Chưa có sản phẩm nào trong giỏ hàng</p></div>
+            <a href="~/ShoppingCart/Index" class="btn">Kiểm tra giỏ hàng</a>
+        </div>
+
+        <form action="~/Home/Login" class="login-form" id="login-form">
+            <h3>đăng nhập</h3>
+            <input id="UserName" name="UserName" type="text" placeholder="nhập tên đăng nhập" class="box">
+            <input id="PassWord" name="PassWord" type="password" placeholder="nhập mật khẩu" class="box">
+            <div class="remember">
+                <input type="checkbox" name="" id="remember-me">
+                <label for="remember-me">Nhớ mật khẩu</label>
+            </div>
+            <button type="button" class="btn" id="btnLogin">đăng nhập</button>
+            <p>chưa có tài khoản ?<a href="~/Home/Register">tạo ngay</a> </p>
+
+        </form>
+    </header>
+    <!-- header section ends -->
+
+    @RenderBody();
+    <!-- footer section starts -->
+    <section class="footer">
+        <div class="box-container">
+            <div class="box">
+                <h3>quick links</h3>
+                <a href="~/Home/Index"><i class="fas fa-arrow-right"></i> home</a>
+                <a href="~/Shop/Home"><i class="fas fa-arrow-right"></i> shop</a>
+                <a href="~/About/Index"><i class="fas fa-arrow-right"></i> about</a>
+                <a href="~/Review/Index"><i class="fas fa-arrow-right"></i> reivew</a>
+                <a href="~/Blog/Index"><i class="fas fa-arrow-right"></i> blog</a>
+                <a href="~/Contact/Index"><i class="fas fa-arrow-right"></i> contact</a>
+            </div>
+
+            <div class="box">
+                <h3>extra links</h3>
+                <a href="~/ShoppingCart/Index"><i class="fas fa-arrow-right"></i>đơn hàng</a>
+                <a href="~/Wishlist/Index"><i class="fas fa-arrow-right"></i>yêu thích</a>
+                <a href=""><i class="fas fa-arrow-right"></i>điều khoản</a>
+            </div>
+
+            <div class="box">
+                <h3>theo dõi</h3>
+                <a href=""> <i class="fab fa-facebook"></i> facebook </a>
+                <a href=""> <i class="fab fa-twitter"></i> twitter </a>
+                <a href=""> <i class="fab fa-instagram"></i> instagram </a>
+                <a href=""> <i class="fab fa-linkedin"></i> linkedin </a>
+                <a href=""> <i class="fab fa-pinterest"></i> pinterest </a>
+            </div>
+
+            <div class="box">
+                <h3>bản tin</h3>
+                <p>đăng ký để xem cập nhật mới nhất</p>
+                <form action="">
+                    <input type="email" name="" id="" placeholder="nhập email">
+                    <input type="submit" value="subcribe" class="btn">
+                </form>
+                <img src="~/assets/img/payment.jpg" alt="" class="payment">
+            </div>
+        </div>
+    </section>
+
+    <section class="credit">created by Mr.Trung | all rights reserved!</section>
+    <!-- footer section ends -->
+</body>
+</html>
+<script src="~/assets/js/js.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+<script src="~/Scripts/ShoppingCart.js"></script>
+<script src="~/Scripts/customer.js"></script>
+@Scripts.Render("~/bundles/jquery")
+@RenderSection("scripts", required: false)
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#login-form").on("submit", function (e) {
+            e.preventDefault();
+        });
+
+        $("#btnLogin").click(function () {
+            var userName = $('#UserName').val();
+            var passWord = $('#PassWord').val();
+            $.ajax({
+                async: true,
+                url: '/Home/Login',
+                type: 'post',
+                data: {
+                    UserName: userName,
+                    PassWord: passWord,
+                },
+                datatype: 'JSON',
+                success: function (response) {
+                    if (response.Status > 0) {
+                        window.location.href = "@Url.Action("Index", "Home")";
+                    } else {
+                        swal({
+                    title: "Lỗi đăng nhập",
+                    text: 'Tên đăng nhập hoặc mật khẩu không đúng!!',
+                    icon: "error",
+                });
+                    }
+                },
+                error: function () {
+                    alert('Lỗi khi thực hiện chức năng đăng nhập')
+                }
+            });
+        });
+    });
+
+
+    function dropdownUser() {
+        document.getElementById("myDropdown").classList.toggle("show");
+    }
+
+    // Close the dropdown menu if the user clicks outside of it
+    window.onclick = function (event) {
+        if (!event.target.matches('#dropbtn')) {
+            var dropdowns = document.getElementsByClassName("dropdown-content");
+            var i;
+            for (i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown.classList.contains('show')) {
+                    openDropdown.classList.remove('show');
+                }
+            }
+        }
+    }
+
+    function soldOut() {
+        swal({
+            title: "Hết hàng",
+            text: 'Số lượng hàng trong kho đã hết, vul lòng chọn sản phẩm khác',
+            icon: "warning",
+        });
+    }
+
+    function checkLogin() {
+        swal({
+            title: "Không khả dụng",
+            text: 'Bạn cần đăng nhập để sử dụng tính năng này',
+            icon: "warning",
+        });
+    }
+
+    //Hàm reset form
+    function resetForm(form) {
+        // Lặp qua tất cả các trường nhập trong form và xóa giá trị
+        $(form).find(':input').each(function () {
+            switch (this.type) {
+                case 'password':
+                case 'select-one':
+                case 'select-multiple':
+                case 'text':
+                case 'textarea':
+                case 'tel':
+                case 'number':
+                case 'email':
+                case 'file':
+                    $(this).val('');
+                    break;
+                case 'checkbox':
+                case 'radio':
+                    this.checked = false;
+            }
+        });
+
+        // Đặt lại trường img về giá trị mặc định (đường dẫn hình ảnh ban đầu)
+        var imgField = $(form).find('img');
+        if (imgField.length > 0) {
+            imgField.attr('src', '/Areas/Admin/Image/imagePreview.jpg'); // Thay 'duong-dan-hinh-anh-mac-dinh.jpg' bằng đường dẫn hình ảnh mặc định của bạn
+        }
+
+        // Tìm trường nhập đầu tiên trong form
+        var firstInput = $(form).find(':input:first');
+
+        if (firstInput.length > 0) {
+            firstInput.val(''); // Xóa giá trị trường đầu tiên (nếu muốn)
+            firstInput.focus(); // Đặt focus lên trường nhập đầu tiên
+        }
+    }
+
+
+    //Hàm hiển thị hình trên form nhập
+    function showImagePreview(imageUploader, previewImage) {
+        if (imageUploader.files && imageUploader.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $(previewImage).attr('src', e.target.result);
+            }
+            reader.readAsDataURL(imageUploader.files[0]);
+        }
+    }
+
+</script>
+

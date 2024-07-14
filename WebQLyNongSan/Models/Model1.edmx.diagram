@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="a65d9fa9c200404189d435fec57948f9" Name="Diagram1" ZoomLevel="72">
+        <EntityTypeShape EntityType="QLyNongSanModel.Blog" Width="1.5" PointX="5.25" PointY="8" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLyNongSanModel.Category" Width="1.5" PointX="0.75" PointY="4.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLyNongSanModel.Contact" Width="1.5" PointX="7.75" PointY="2.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLyNongSanModel.OrderDetail" Width="1.5" PointX="11.5" PointY="8" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLyNongSanModel.OrderTable" Width="1.5" PointX="8.25" PointY="7.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLyNongSanModel.Product" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLyNongSanModel.Review" Width="1.5" PointX="5.25" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLyNongSanModel.Role" Width="1.5" PointX="0.75" PointY="8.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLyNongSanModel.Supplier" Width="1.5" PointX="0.75" PointY="11.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLyNongSanModel.sysdiagram" Width="1.5" PointX="9.75" PointY="2.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLyNongSanModel.TransActStatu" Width="1.5" PointX="6" PointY="14.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLyNongSanModel.UserTable" Width="1.5" PointX="3" PointY="7" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLyNongSanModel.WishList" Width="1.5" PointX="5.25" PointY="11.25" IsExpanded="true" />
+        <AssociationConnector Association="QLyNongSanModel.FK__Blog__UserID__37A5467C" ManuallyRouted="false" />
+        <AssociationConnector Association="QLyNongSanModel.FK__Product__Categor__3C69FB99" ManuallyRouted="false" />
+        <AssociationConnector Association="QLyNongSanModel.FK__OrderDeta__Order__38996AB5" ManuallyRouted="false" />
+        <AssociationConnector Association="QLyNongSanModel.FK__OrderDeta__Produ__398D8EEE" ManuallyRouted="false" />
+        <AssociationConnector Association="QLyNongSanModel.FK__OrderTabl__Stran__3A81B327" ManuallyRouted="false" />
+        <AssociationConnector Association="QLyNongSanModel.FK__OrderTabl__UserI__3B75D760" ManuallyRouted="false" />
+        <AssociationConnector Association="QLyNongSanModel.FK__Product__supplie__440B1D61" ManuallyRouted="false" />
+        <AssociationConnector Association="QLyNongSanModel.FK__Review__ProductI__3D5E1FD2" ManuallyRouted="false" />
+        <AssociationConnector Association="QLyNongSanModel.FK__WishList__Produc__403A8C7D" ManuallyRouted="false" />
+        <AssociationConnector Association="QLyNongSanModel.FK__Review__UserID__3E52440B" ManuallyRouted="false" />
+        <AssociationConnector Association="QLyNongSanModel.FK__UserTable__RoleI__3F466844" ManuallyRouted="false" />
+        <AssociationConnector Association="QLyNongSanModel.FK__WishList__UserID__412EB0B6" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

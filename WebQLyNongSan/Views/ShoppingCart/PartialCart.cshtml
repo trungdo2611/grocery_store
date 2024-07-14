@@ -1,0 +1,32 @@
+﻿@model IEnumerable<WebQLyNongSan.Models.ShoppingCartItem>
+
+@if (Model != null && Model.Any())
+{
+    var tongtien = decimal.Zero;
+    foreach (var item in Model)
+    {
+        tongtien += item.TotalPrice;
+        <div class="box">
+            <i data-id="@item.id" id="btnDeleteCart" class="fas fa-times"></i>
+            <img src="~/Areas/Admin/Image/@item.Picture" alt="">
+            <div class="content">
+                <h3>@item.Name</h3>
+                <span class="quantity">@item.Quantity</span>
+                <span class="multiply">x</span>
+                <span class="price">@string.Format("{0:#,0}", item.TotalPrice) VNĐ</span>
+            </div>
+        </div>
+    }
+    <h3 class="total"> Tổng : <span>@string.Format("{0:#,0}",tongtien) VNĐ</span></h3>
+    
+
+}
+else
+{
+    <div class="box">
+
+        <div class="content">
+            <h3>Chưa có sản phẩm nào trong giỏ hàng</h3>
+        </div>
+    </div>
+}

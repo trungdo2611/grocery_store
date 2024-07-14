@@ -1,0 +1,47 @@
+﻿@model IEnumerable<WebQLyNongSan.Models.ReviewViewModel>
+<style>
+    .p__search {
+        font-size: 1.6rem;
+        color: #000;
+    }
+</style>
+@if(Model.Any())
+{
+    foreach (var item in Model)
+    {
+        var defaultStars = 5 - item.reviews.Rating;
+        <div class="comments__container">
+            <div class="comments__card">
+                <div class="pic">
+                    <img class="pic--Picture" src="~/Areas/Admin/Image/@item.avatarUser" alt="">
+                </div>
+                <div class="comment__info">
+                    <h4 class="userName">
+                        @item.userName
+                    </h4>
+                    <div class="comment__stars">
+                        @for (var i = 0; i < item.reviews.Rating; i++)
+                        {
+                            <i class="fas fa-star"></i>
+                        }
+                        @for (var i = (item.reviews.Rating + 1); i <= 5; i++)
+                        {
+                            <i class="far fa-star"></i>
+                        }
+
+                    </div>
+                    <p class="comment">
+                        @item.reviews.Comment
+
+                    </p>
+                </div>
+            </div>
+        </div>
+    }
+}
+else
+{
+    <p class="p__search">Chưa có bình luận nào, bạn hãy là người đánh giá đầu tiên</p>
+}
+
+

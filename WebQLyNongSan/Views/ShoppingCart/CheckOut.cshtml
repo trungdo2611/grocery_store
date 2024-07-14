@@ -1,0 +1,239 @@
+﻿@model IEnumerable<WebQLyNongSan.Models.ShoppingCartItem>
+@{
+    ViewBag.Title = "CheckOut";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    WebQLyNongSan.Models.QLyNongSanEntities2 db = new WebQLyNongSan.Models.QLyNongSanEntities2();
+    var tongtien = decimal.Zero;
+    int tongsl = 0;
+}
+
+
+
+<style>
+
+    .checkout-container {
+        max-width: 1000px;
+        display: flex;
+        justify-content: center;
+        padding: 2rem 2rem;
+        margin: 8rem auto;
+    }
+
+    .checkoutLayout {
+        display: grid;
+        grid-template-columns: repeat(2,1fr);
+        gap: 5rem;
+        padding: 2rem;
+    }
+
+        .checkoutLayout .right-checkout {
+            background-color: #fff;
+            border-radius: 2rem;
+            padding: 4rem;
+            color: #000;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+        }
+
+            .checkoutLayout .right-checkout h1 {
+                text-align: center;
+                margin-bottom: 2rem;
+            }
+
+        .checkoutLayout .list img {
+            height: 7rem;
+        }
+
+    .total-container {
+        border-top: 2px solid #bac34e;
+    }
+
+    .checkoutLayout .right-checkout .form-checkout {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding-bottom: 2rem;
+    }
+
+    .checkoutLayout .form-checkout .group {
+        font-size: 1.3rem;
+        padding: .5rem 0;
+    }
+
+        .checkoutLayout .form-checkout .group:last-child {
+            margin-top: .5rem;
+        }
+
+        .checkoutLayout .form-checkout .group label {
+            font-weight: bold;
+        }
+
+
+    .checkoutLayout .form-checkout input {
+        width: 100%;
+        padding: 1rem 2rem;
+        box-sizing: border-box;
+        margin-top: 1rem;
+        border: 1px solid #c3bebe;
+        border-radius: 2rem;
+    }
+
+    .checkoutLayout .form-checkout select {
+        width: 100%;
+        padding: 0 2rem;
+        margin-top: 1rem;
+    }
+
+
+    .checkoutLayout .row1 {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 1rem;
+        font-size: 1.3rem;
+    }
+
+        .checkoutLayout .row1 div:nth-child(2) {
+            font-weight: bold;
+            font-size: 1.4rem;
+        }
+
+    .btnCheckout {
+        width: 100%;
+        height: 4rem;
+        border-radius: 2rem;
+        margin-bottom: 2rem;
+        font-weight: bold;
+        color: #fff;
+        cursor: pointer;
+        background-color: #bac34e;
+    }
+
+    .listCart h1 {
+        border-top: 3px solid #eee;
+        padding: 2rem 0;
+    }
+
+    .listCart .list .item img {
+        height: 7rem;
+    }
+
+    .listCart .item {
+        display: grid;
+        grid-template-columns: 8rem 1fr 5rem 8rem;
+        align-items: center;
+        gap: 2rem;
+        margin-bottom: 3rem;
+        padding: 0 1rem;
+        box-shadow: 0 1rem 2rem #555;
+        border-radius: 2rem;
+        min-height: 8rem;
+    }
+
+        .listCart .item .quantity {
+            font-size: 1.2rem;
+            text-transform: none;
+        }
+
+        .listCart .item .name,
+        .listCart .item .totalPrice {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+    .form-group-vnpay {
+        margin-top: .4rem;
+    }
+    .form-group-vnpay h4 {
+        font-size: 1.2rem;
+        padding-bottom: .2rem;
+        text-align: center;
+    }
+    .form-group-vnpay h5 {
+        font-size: 1.1rem;
+        padding: .3rem 0;
+    }
+
+    .form-payment {
+        display: flex;
+        align-items: center;
+    }
+
+    .form-payment label {
+        padding-right: .4rem;
+    }
+
+        .form-payment span {
+            margin-top: 0.4rem
+        }
+</style>
+
+<div class="checkout-container">
+    <div class="checkoutLayout">
+        <div class="listCart">
+            <h1> Danh sách sản phẩm trong giỏ hàng</h1>
+            <div id="show__fail"></div>
+            @if (Model != null && Model.Any())
+            {
+                foreach (var item in Model)
+                {
+                    tongtien += item.TotalPrice;
+                    tongsl += item.Quantity;
+                    <div class="list">
+                        <div class="item">
+                            <img src="~/Areas/Admin/Image/@item.Picture" alt="Alternate Text" />
+                            <div class="info">
+                                <div class="name">@item.Name</div>
+                            </div>
+                            <div class="quantity">x @item.Quantity</div>
+                            <div class="totalPrice"> @string.Format("{0:#,0}", item.TotalPrice) VNĐ</div>
+                        </div>
+                    </div>
+                }
+            }
+
+
+
+        </div>
+
+        <div class="right-checkout">
+            <h1>Thông tin người mua</h1>
+
+            @Html.Action("Partial_CheckOut", "ShoppingCart")
+
+            <div class="total-container">
+                <div class="row1">
+                    <div>Tổng số lượng</div>
+                    <div class="totalQuantity">@tongsl</div>
+                </div>
+                <div class="row1">
+                    <div>Thành tiền</div>
+                    <div class="total">@string.Format("{0:#,0}", tongtien) VNĐ</div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            $('body').on('change', '#drTypePayment', function () {
+                var type = $(this).val();
+                $('#load_form_payment').hide();
+                if (type == "2") {
+                    $('#load_form_payment').show();
+                }
+            });
+        })
+        
+    </script>
+
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <script>
+        alert('@Html.Raw(ViewData.ModelState["Quantity"].Errors.FirstOrDefault().ErrorMessage)');
+        </script>
+    }
+}

@@ -1,0 +1,220 @@
+﻿@model IEnumerable<WebQLyNongSan.Models.ShoppingCartItem>
+@{
+    ViewBag.Title = "ShoppingCart";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var tongtien = decimal.Zero;
+}
+
+<style>
+    .btn-update-sl {
+        font-size: 1.4rem;
+        color: #000;
+        padding: .5rem;
+        cursor: pointer;
+    }
+
+        .btn-update-sl:hover {
+            color: #bac34e;
+        }
+
+    .btn-Checkout {
+        padding: 0.8rem 2.1rem;
+        border-radius: .3rem;
+    }
+
+    .cart-page {
+        max-width: 1000px;
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-end;
+        padding: 2rem 2rem;
+        margin: 4rem auto;
+    }
+
+    .total-price {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+        .total-price table {
+            border-top: 3px solid #bac34e;
+            width: 100%;
+            max-width: 40rem;
+            font-size: 1.6rem !important;
+        }
+
+    td:last-child {
+        text-align: right;
+    }
+
+    th:last-child {
+        text-align: right;
+    }
+
+    .cart-page table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 1.4rem;
+    }
+
+    .cart-info {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .cart-info-detail {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    th {
+        text-align: left;
+        padding: .5rem;
+        color: #fff;
+        background-color: #bac34e;
+        font-weight: normal;
+    }
+
+    td {
+        padding: 1rem .5rem;
+    }
+
+        td input {
+            width: 4rem;
+            height: 3rem;
+            padding: .6rem;
+            border: 0.1rem solid rgba(0, 0, 0, 0.1);
+            border-radius: .4rem;
+            text-align: center;
+        }
+
+        td a {
+            color: #ff523b;
+            font-size: 1.1rem;
+        }
+
+            td a:hover {
+                text-decoration: underline;
+            }
+
+        td img {
+            width: 10rem;
+            height: 10rem;
+            margin-right: 1rem;
+        }
+</style>
+
+<div class="heading">
+    <h1>Giỏ hàng</h1>
+    <p><a href="~/Home/Index">Trang chủ >></a> <a href="~/Shop/home">shop >></a> <a>Giỏ hàng</a></p>
+</div>
+
+<div class="cart-page">
+
+    <table>
+        <tr>
+            <th>STT</th>
+            <th>Sản phẩm</th>
+            <th>Loại</th>
+            <th>Số lượng</th>
+            <th>Đơn giá</th>
+        </tr>
+        @if (Model != null && Model.Any())
+        {
+            var i = 0;
+
+            foreach (var item in Model)
+            {
+                tongtien += item.TotalPrice;
+                <tr id="trow-@item.id">
+                    <td>
+                        @(i+1)
+                    </td>
+                    <td>
+                        <div class="cart-info">
+                            <img src="~/Areas/Admin/Image/@item.Picture" alt="Alternate Text" />
+                            <div class="cart-info-detail">
+                                <p>@item.Name</p>
+                                <small>Giá : @string.Format("{0:#,0}", item.Price) VNĐ</small>
+                                <a href="#" data-id="@item.id" id="btnDeleteCart">Xóa khỏi giỏ hàng</a>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        @item.CategoryName
+                    </td>
+                    <td>
+                        <input type="number" name="name" id="Quantity_@item.id" value="@item.Quantity" />
+                        <a title="cập nhật" href="#" data-id="@item.id" id="btnUpdateCart"><i class="fa-solid fa-pencil btn-update-sl"></i></a>
+                    </td>
+                    <td>
+                        @string.Format("{0:#,0}", item.TotalPrice) VNĐ
+                    </td>
+                </tr>
+                i++;
+            }
+
+        }
+        else
+        {
+            <tr><td colspan="7">Không có sản phẩm nào trong giỏ hàng !!</td></tr>
+        }
+
+
+    </table>
+
+    <div class="total-price">
+        <table>
+            <tr>
+                <td>Thành tiền :</td>
+                <td> @string.Format("{0:#,0}", tongtien) VNĐ</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="btn-container">
+        @if (Session["userId"] == null)
+        {
+            <a onclick="warnCheckOut()" class="btn btn-Checkout">
+                Kiểm tra thông tin
+            </a>
+
+        }
+        else
+        {
+
+            <a href="~/ShoppingCart/CheckOut" class="btn btn-Checkout">
+                Kiểm tra thông tin
+            </a>
+        }
+    </div>
+
+
+
+</div>
+
+@section scripts {
+    <script>
+        function warnCheckOut() {
+            swal({
+                title: "Lỗi",
+                text: 'Bạn phải đăng nhập để sử dụng chức năng này',
+                icon: "warning",
+            });
+        }
+    </script>
+    @if (ViewBag.msgSuccess != null)
+    {
+        <script>
+            toast({
+                title: 'Thành công !!',
+                message: "Bạn đã cập nhật thành công số lượng sản phẩm này",
+                type: 'success',
+                duration: 2000
+            })
+        </script>
+    }
+}

@@ -1,0 +1,38 @@
+﻿@model WebQLyNongSan.Models.Category
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="details">
+    <div class="tableData">
+        <div class="cardHeader form-index">
+            <h2>Chi tiết danh mục @Model.Name</h2>
+        </div>
+
+        <div class="card-wrapper">
+            <div class="card">
+
+
+                <!-- card left -->
+                <div class="main-content">
+                    <h2 class="content-title">@Model.Name</h2>
+                    <div class="content-element">
+                        <p class="last-price">Tên Alias: <span>@Model.Alias</span></p>
+                    </div>
+                </div>
+
+                <!--card right  -->
+                <div class="main-imgs">
+                    <img src="~/Areas/Admin/Image/@Model.Picture" alt="san-pham">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="btn-deltails">
+        <a class="btn-Edit-Details" href="~/Admin/Category/Edit/@Model.id">Chỉnh sửa</a>
+        <a class="btn-Back-Details" href="~/Admin/Category/Index">Quay lại</a>
+    </div>
+</div>
+

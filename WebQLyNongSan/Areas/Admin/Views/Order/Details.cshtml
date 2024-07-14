@@ -1,0 +1,90 @@
+﻿@model IEnumerable<WebQLyNongSan.Models.OrderDetail>
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    WebQLyNongSan.Models.QLyNongSanEntities2 db = new WebQLyNongSan.Models.QLyNongSanEntities2();
+
+}
+
+<style>
+    table {
+        margin-top: 3rem !important;
+        margin-bottom: 15rem;
+    }
+    .info-customer {
+        text-align: center;
+        font-size: 1.6rem;
+    }
+    .info-customer h2 {
+        margin-bottom: .8rem;
+    }
+    .info-customer p {
+        padding: .5rem 0;
+    }
+</style>
+ 
+<div class="details">
+    <div class="tableData">
+        @{
+            var first = Model.FirstOrDefault();
+            var order = db.OrderTables.Find(first.OrderID);
+            <div class="cardHeader form-index">
+                <h2>Chi tiết đơn hàng @order.Code</h2>
+            </div>
+        }
+
+    <div class="info-customer">
+        <h2> Thông tin người nhận</h2>
+        <p>Họ và tên : @order.FullName</p>
+        <p>Địa chỉ : @order.Address</p>
+        <p>Email : @order.Email</p>
+        <p>Số điện thoại : @order.Phone</p>
+    </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <td>Sản phẩm</td>
+                    <td>Hình ảnh</td>
+                    <td>Giá</td>
+                    <td>Số lượng</td>
+                    <td>Tổng tiền</td>
+                </tr>
+            </thead>
+
+            <tbody class="tbody">
+                @foreach (var item in Model)
+                {
+                    var product = db.Products.SingleOrDefault(x => x.id == item.ProductID);
+                    <tr>
+                        <td>
+                            @product.Name
+                        </td>
+                        <td>
+                            <img src="~/Areas/Admin/Image/@product.Picture" style="width: 100px; height:auto" alt="Alternate Text" />
+                        </td>
+                        <td>
+                            @string.Format("{0:#,0}", item.Price) VNĐ
+                        </td>
+
+                        <td>
+                            @item.Quantity
+                        </td>
+
+                        <td>
+                            @{
+                                var total = item.Quantity * item.Price;
+                            }
+                            @string.Format("{0:#,0}", total) VNĐ
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <div class="btn-deltails">
+            <a class="btn-Back-Details" href="~/Admin/Order/Index">Quay lại</a>
+        </div>
+    </div>
+</div>
+

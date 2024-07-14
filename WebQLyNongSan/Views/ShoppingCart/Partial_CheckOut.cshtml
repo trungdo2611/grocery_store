@@ -1,0 +1,103 @@
+﻿@model WebQLyNongSan.Models.OrderViewModel
+
+@{
+    WebQLyNongSan.Models.QLyNongSanEntities2 db = new WebQLyNongSan.Models.QLyNongSanEntities2();
+}
+
+@if (Session["userId"] != null)
+{
+    int idUser = (int)Session["userId"];
+    var customer = db.UserTables.Find(idUser);
+    using (Ajax.BeginForm("CheckOut", "ShoppingCart", new AjaxOptions
+    {
+        HttpMethod = "POST",
+        UpdateTargetId = "load_data",
+        OnSuccess = "OnSuccessCO",
+        OnBegin = "OnBeginCO"
+    }))
+    {
+        <script>
+            function OnBeginCO() {
+             $('.btnCheckout').attr("disabled", "disabled");
+            $('#load_send').html('<h2>Đang xử lý....</h2>');
+            }
+
+            function OnSuccessCO(res) {
+                if (res.Success) {
+                    if (res.Code == 1) {
+                        window.location.href = '/ShoppingCart/CheckOutSuccess';
+                    } else {
+                        window.location.href = res.Url;
+                    }
+                } else {
+                    alert(1);
+                }
+            }
+        </script>
+
+
+        <div class="form-checkout">
+            <div class="group">
+                <label for="">Họ và tên: </label>
+                <input type="text" name="FullName" value="@customer.FullName" />
+            </div>
+            <div class="group">
+                <label for="">Số điện thoại: </label>
+                <input type="text" name="Phone" value="@customer.Phone" />
+            </div>
+            <div class="group">
+                <label for="">Email: </label>
+                <input style="text-transform: none!important;" type="text" name="Email" value="@customer.Email" />
+            </div>
+            <div class="group">
+                <label for="">Địa chỉ: </label>
+                <input type="text" name="Address" value="@customer.Address" />
+            </div>
+            <div class="group">
+                <label for="">Phương thức thanh toán: </label>
+                <select name="PaymentType" id="drTypePayment">
+                    <option value="1" selected>Thanh toán khi nhận hàng</option>
+                    <option value="2">Thanh toán online(chuyển khoản)</option>
+                </select>
+            </div>
+
+            <div class="form-group-vnpay" id="load_form_payment" style="display:none;">
+                <h4> <label>Chọn phương thức thanh toán VNPay:</label><br /></h4>
+                <h5>Cách 1: Chuyển hướng sang VNPAY chọn phương thức thanh toán</h5>
+                <div class="form-payment">
+                <label><input type="radio" name="TypePaymentVN" value="0" checked /></label>
+                <span>Cổng thanh toán VNPAYQR</span>
+                </div>
+                <h5>Cách 2: Tách phương thức thanh toán tại site của Merchant</h5>
+                <div class="form-payment">
+                    <label><input type="radio" name="TypePaymentVN" value="1" /></label>
+                    <span>Thanh toán qua ứng dụng hỗ trợ VNPAYQR</span>
+                </div>
+               
+                <div class="form-payment">
+                    <label><input type="radio" name="TypePaymentVN" value="2" /></label>
+                    <span>ATM-Tài khoản ngân hàng nội địa</span>
+                </div>
+                
+                <div class="form-payment">
+                    <label><input type="radio" name="TypePaymentVN" value="3" /></label>
+                    <span>Thanh toán qua thẻ quốc tế</span>
+                </div>
+
+            </div>
+            <div class="form-group" id="load_send"></div>
+        </div>
+
+        <button  type="submit" class="btnCheckout">
+            Thanh toán
+        </button>
+    }
+
+}
+else
+{
+    <div class="group">
+        <label for="">Không tìm thấy thông tin người dùng!!</label>
+    </div>
+}
+

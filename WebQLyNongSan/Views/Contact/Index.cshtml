@@ -1,0 +1,159 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="heading">
+    <h1>Liên hệ</h1>
+    <p><a href="~/Home/Index">Trang chủ >></a> Liên hệ</p>
+</div>
+
+<section class="contact">
+    <div class="icons-container">
+        <div class="icons">
+            <i class="fas fa-phone">
+            </i>
+            <h3>Số điện thoại</h3>
+            <p>+84 0123456789</p>
+            <p>+84 0123456789</p>
+        </div>
+
+        <div class="icons">
+            <i class="fas fa-envelope"></i>
+            <h3>Email</h3>
+            <p>admin@gmail.com</p>
+            <p>admin@gmail.com</p>
+        </div>
+
+        <div class="icons">
+            <i class="fas fa-map-marker-alt"></i>
+            <h3>Địa chỉ</h3>
+            <p>225 Nguyễn Thông, Phú Hài, Thành phố Phan Thiết, Bình Thuận, Việt Nam</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <form action="~/Contact/Create" id="form-1" method="post">
+            <h3>
+                liên hệ với chúng tôi
+            </h3>
+            <div class="inputBox">
+                <input name="Name" id="Name" type="text" placeholder="nhập tên" class="box">
+                <span class="form-message"><label class="error" for="Name"></label></span>
+                <input id="Email" name="Email" type="email" placeholder="nhập email" class="box">
+                <span class="form-message"><label class="error" for="Email"></label></span>
+            </div>
+
+            <div class="inputBox">
+                <input id="Phone" name="Phone" type="number" placeholder="nhập số điện thoại" class="box">
+                <span class="form-message"><label class="error" for="Phone"></label></span>
+            </div>
+            <textarea placeholder="nội dung" name="Content" id="Content" cols="30" rows="10"></textarea>
+            <span class="form-message"><label class="error" for="Content"></label></span>
+            <input id="btnSubmitContact" type="submit" value="gửi tin nhắn" class="btn">
+        </form>
+
+        <iframe class="map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3917.310661463831!2d108.16571817332395!3d10.93988918921899!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317684eb69bdca09%3A0x22b8d55770442fa5!2zVHLGsOG7nW5nIMSQ4bqhaSBo4buNYyBQaGFuIFRoaeG6v3Q!5e0!3m2!1svi!2s!4v1697953058000!5m2!1svi!2s" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+</section>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            //Chặn hành động submit mặc định
+            $("#form-1").on("submit", function (e) {
+                e.preventDefault();
+            });
+
+            //Thực hiện hành động kiểm tra validate và thêm mới
+            $("#btnSubmitContact").on("click", function () {
+                if ($('#form-1').valid()) {
+                    jQueryAjaxCreate(document.getElementById("form-1"));
+                } else {
+                    $("#form-1").submit();
+                }
+            });
+
+            //Setting validation
+            $('#form-1').validate({
+                rules: {
+                    Name: {
+                        required: true,
+                        minlength: 1
+                    },
+                    Content: {
+                        required: true,
+                        minlength: 10
+                    },
+                    Email: {
+                        required: true,
+                        email: true
+                        },
+                    Phone: {
+                        required: true,
+                        maxlength: 10,
+                        minlength: 10
+                    }
+                },
+                messages: {
+                    Name: {
+                        required: "Bạn phải nhập tên người dùng",
+                        minlength: "Tên phải có độ dài tối thiểu 1 ký tự"
+                    },
+                    Email: {
+                        email: "Bạn phải nhập đúng định dạng email",
+                        required: "Bạn phải nhập email"
+                        },
+                    Phone: {
+                        required: "Bạn phải nhập số điện thoại",
+                        maxlength: "Số điện thoại có độ dài tối đa 10 ký tự",
+                        minlength: "Số điện thoại có độ dài là 10 ký tự"
+                    },
+
+                    Content: {
+                        required: "Bạn phải nội dung",
+                        minlength: "Nội dung phải có độ dài tối thiểu 10 ký tự"
+                    },
+                }
+            });
+        });
+
+        //Hàm thêm mới
+        function jQueryAjaxCreate(form) {
+
+            if ($(form).valid()) {
+                var ajaxCofig = {
+                    type: 'POST',
+                    url: form.action,
+                    data: new FormData(form),
+                    contentType: false,
+                    processData: false,
+                    success: function (response) {
+                        if (response == "success") {
+                            toast({
+                                title: 'Thành công !!',
+                                message: 'Bạn đã gửi đi thành công tin nhắn',
+                                type: 'success',
+                                duration: 2000
+                            });                            
+                            resetForm(form);
+                        }
+
+                    },
+                    error: function (error) {
+                        showErrorCreate();
+                    }
+                }
+                if ($(form).attr('enctype') == "multipart/form-data") {
+                    ajaxCofig["contentType"] = false;
+                    ajaxCofig["processData"] = false;
+
+                }
+                $.ajax(ajaxCofig)
+            }
+        }
+
+    </script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+}

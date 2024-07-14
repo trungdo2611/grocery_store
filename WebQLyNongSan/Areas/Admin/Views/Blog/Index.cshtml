@@ -1,0 +1,253 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="tool">
+    <div class="heading">
+
+        <form action="" class="search">
+            <label>
+                <input id="search-input" type="text" placeholder="Search here">
+                <button type="submit"> <i class="fa-solid fa-magnifying-glass"></i></button>
+            </label>
+        </form>
+        <button href="" class="btnAdd">
+            <i class="fa-solid fa-plus"></i>
+            Thêm
+        </button>
+    </div>
+</div>
+
+<!-- ================ Order Details List ================= -->
+<div class="details">
+    <div class="tableData">
+        <div class="cardHeader form-index">
+            <h2>Danh sách bài viết</h2>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <td style="width:20rem">Tiêu đề</td>
+                    <td>Hình ảnh</td>
+                    <td>Người viết</td>
+                    <td>Nội dung</td>
+                    <td style="width:9.6rem">Hành động</td>
+
+                </tr>
+            </thead>
+            <tbody class="tbody"></tbody>
+        </table>
+    </div>
+    <nav id="pagination" class="pagination"></nav>
+</div>
+
+<div class="modal js-modal">
+    <form action="~/Admin/Blog/Create" method="post" class="form js-form animate" id="form-2" enctype="multipart/form-data">
+        <div class="modal-close js-modal-close">
+            <i class="fa-regular fa-circle-xmark"></i>
+        </div>
+        <h3 class="heading">Thêm bài viết</h3>
+
+        <div class="spacer"></div>
+
+        <div class="form-group">
+            <label for="Title" class="form-label">Tên bài viết</label>
+            <input id="Title" name="Title" type="text" placeholder="VD: chuối" class="form-control">
+            <span class="form-message"><label class="error" for="Title"></label></span>
+        </div>
+
+        <div class="form-group">
+            <label for="Picture" class="form-label">Hình ảnh</label>
+            <img src="~/Areas/Admin/Image/imagePreview.jpg" style="margin: 1rem; height: auto; width: 20rem" id="imagePreview" alt="Alternate Text" />
+            <input id="Picture" name="Picture" type="file" class="form-control" data-val="true" accept="image/jpeg, image/png" onchange="showImagePreview(this, document.getElementById('imagePreview'))">
+            <span class="form-message"><label class="error" for="Picture"></label></span>
+        </div>
+
+        <div class="form-group">
+            <label for="Content" class="form-label">Nội dung</label>
+            <textarea id="Content" name="Content" type="text" placeholder="VD: Thực phẩm..." class="form-control"></textarea>
+            <span class="form-message"><label class="error" for="Content"></label></span>
+        </div>
+
+        <button type="submit" id="addCategoryButton" class="form-submit">Thêm</button>
+    </form>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+@section scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            loadData('', null, 4);
+
+            //Hàm tìm kiếm
+            $(".search").submit(function (e) {
+                e.preventDefault();
+                // Lấy từ khóa tìm kiếm từ input
+                var searchString = $("#search-input").val();
+                // Thực hiện tìm kiếm bằng AJAX
+                loadData(searchString, null, 4);
+            });
+
+            //Sự kiện nhập của text tên sản phẩm
+            $('#Name').keypress(function () {
+                $('#Alias').val(getAlias($(this).val()));
+            });
+
+            //Chặn hành động submit mặc định
+            $("#form-2").on("submit", function (e) {
+                e.preventDefault();
+            });
+
+            //Setting validation
+            $('#form-2').validate({
+                rules: {
+                    Title: {
+                        required: true,
+                        minlength: 3
+                    },
+                    Picture: "required",
+                    Content: {
+                        required: true,
+                        minlength: 10
+                    },
+                },
+                messages: {
+                    Title: {
+                        required: "Bạn phải nhập tiêu đề bài viết",
+                        minlength: "Tiêu đề bài viết phải có độ dài tối thiểu 3 ký tự"
+                    },
+                    Content: {
+                        required: "Bạn phải nhập nội dung bài viết",
+                        minlength: "Nội dung bài viết phải có độ dài tối thiểu 10 ký tự"
+                    },
+                    Picture: "Bạn phải chọn hình ảnh",
+                }
+            });
+
+            //Thực hiện hành động kiểm tra validate và thêm mới
+            $("#addCategoryButton").on("click", function () {
+                if ($('#form-2').valid()) {
+                    jQueryAjaxCreate(document.getElementById("form-2"));
+                } else {
+                    $("#form-2").submit();
+                }
+            });
+
+        });
+
+        //Hàm load data
+        function loadData(_searchString, page, pageSize) {
+            $.ajax({
+                async: true,
+                url: '/Admin/Blog/GetData',
+                data: {
+                    searchString: _searchString,
+                    page: page,
+                    pageSize: pageSize,
+                },
+                contentType: 'application/json;charset=utf-8',
+                datatype: 'JSON',
+                success: function (response) {
+                    if (response.total > 0) {
+                        var data = response.datas;
+                        var html = '';
+                        $.each(data, function (key, value) {
+                            html += '<tr>';
+                            html += '<td>' + value.blogs.Title + '</td>';
+                            html += '<td><img style= " width: 100px;height: auto; " src="/Areas/Admin/Image/' + value.blogs.Picture + '" alt="Alternate Text" /></td>';
+                            html += '<td>' + value.userName + '</td>';
+                            html += '<td class="p_Content">' + value.blogs.Content + '</td>';
+                            html += ' <td><a title="Xem" href="/Admin/Blog/Details/' + value.blogs.id + '"><i class="fa-solid fa-eye icons"></i></a>'
+                            html += '<a title="Sửa" href="/Admin/Blog/Edit/' + value.blogs.id + '"><i class="fa-solid fa-pencil icons"></i></a>'
+                            html += '<a  id="delete-link" title="Xóa" href="/Admin/Blog/Delete/' + value.blogs.id + '" onclick = "showDelete(event,\'' + value.blogs.Title + '\')" ><i class="fa-solid fa-trash icons"></i></a> </td>'
+                            html += '</tr>';
+                        });
+                        $('.tbody').html(html);
+                        Pagination(response.currrentPage, response.NumberPage, response.PageSize);
+                    } else {
+                        html = `<tr><td class="p_Search" colspan="8">Không tìm thấy kết quả theo từ khóa "${_searchString}"</td></tr>`
+                        $('.tbody').html(html);
+                    }
+                },
+
+                error: function () {
+                    alert('lỗi hiển thị danh mục');
+                }
+            });
+        }
+
+        //Hàm thêm mới
+        function jQueryAjaxCreate(form) {
+            if ($(form).valid()) {
+                var ajaxCofig = {
+                    type: 'POST',
+                    url: form.action,
+                    data: new FormData(form),
+                    contentType: false,
+                    processData: false,
+                    success: function (response) {
+                        if (response == "success") {
+                            showSuccessCreate('thêm', 'bài viết');
+                            loadData('', null, 4);
+                            resetForm(form);
+                        }
+
+                    },
+                    error: function (error) {
+                        showErrorCreate();
+                    }
+                }
+                if ($(form).attr('enctype') == "multipart/form-data") {
+                    ajaxCofig["contentType"] = false;
+                    ajaxCofig["processData"] = false;
+
+                }
+                $.ajax(ajaxCofig)
+            }
+        }
+
+        //Hàm phân trang
+        function Pagination(currentPage, NumberPage, pageSize) {
+            if (NumberPage > 0) {
+                var str = `<nav aria-label="Page navigation example"> <ul class="pagination">`;
+                if (currentPage != 1) {
+                    str += `<li class="page-item"><a class="page-link" onclick="NextPage(${currentPage - 1},${pageSize})" href="javascript:void(0);">Trước</a></li>`;
+                }
+
+                for (let i = 1; i <= NumberPage; i++) {
+                    if (currentPage === i) {
+                        str += `<li class="page-item active1"><a class="page-link" href="javascript:void(0);">${i}</a></li>`;
+                    } else {
+                        str += `<li class="page-item"><a class="page-link" onclick="NextPage(${i},${pageSize})" href="javascript:void(0);">${i}</a></li>`;
+                    }
+
+                }
+                if (currentPage != NumberPage) {
+                    str += `<li class="page-item"><a class="page-link" onclick="NextPage(${currentPage + 1},${pageSize})" href="javascript:void(0);">Sau</a></li>`;
+                }
+                str += "</ul></nav>";
+                $('#pagination').html(str);
+            }
+
+        }
+
+        function NextPage(page, pageSize) {
+            var searchString = $("#search-input").val();
+            loadData(searchString, page, pageSize);
+        }
+    </script>
+
+    @if (!string.IsNullOrEmpty(ViewBag.SuccessMessage))
+    {
+        <script>
+        showSuccessCreate('cập nhật', '@ViewBag.SuccessMessage');
+        </script>
+    }
+
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+}

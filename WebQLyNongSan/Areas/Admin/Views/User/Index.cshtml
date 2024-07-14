@@ -1,0 +1,124 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+@model PagedList.IPagedList<WebQLyNongSan.Models.UserViewModel>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    WebQLyNongSan.Models.QLyNongSanEntities2 db = new WebQLyNongSan.Models.QLyNongSanEntities2();
+}
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+<!-- Heading -->
+<div class="tool">
+    <div class="heading">
+
+        <form action="~/Admin/User/Index" method="get" class="search">
+            <label>
+                <input id="search-input" name="searchString" value="@ViewBag.currentFilter" type="text" placeholder="Search here">
+                <button id="btnSearch" type="submit"> <i class="fa-solid fa-magnifying-glass"></i></button>
+            </label>
+        </form>
+    </div>
+</div>
+
+<!-- ================ Order Details List ================= -->
+<div class="details">
+    <div class="tableData">
+        <div class="cardHeader form-index">
+            <h2>Danh sách nguời dùng</h2>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <td>Tên người dùng</td>
+                    <td>Quyền</td>
+                    <td>Ảnh đại diện</td>
+                    <td>Email</td>
+                    <td>Active</td>
+                    <td>Hành động</td>
+                </tr>
+            </thead>
+            @if (Model.Any())
+            {
+                <tbody class="tbody">
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @item.User.UserName
+                            </td>
+                            <td>
+                                @item.RoleName
+                            </td>
+
+
+                            <td>
+                                <img src="~/Areas/Admin/Image/@item.User.avatar" style="width: 100px; height:auto" alt="Alternate Text" />
+                            </td>
+                            <td>
+                                @item.User.Email
+                            </td>
+                            <td>
+                                @item.User.Active
+                            </td>
+                            <td>
+                                <a title="Xem" href="/Admin/User/Details/@item.User.ID"><i class="fa-solid fa-eye icons"></i></a>
+                                <a title="Chỉnh sửa" href="/Admin/User/Edit/@item.User.ID"><i class="fa-solid fa-pencil icons"></i></a>
+                                <a id="delete-link" title="Xóa" href="/Admin/User/Delete/@item.User.ID" onclick="showDelete1(event,'@item.User.UserName')"><i class="fa-solid fa-trash icons"></i></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            }
+            else
+            {
+                <tr>
+                    <td class="p_Search" colspan="8">Không tìm thấy kết quả theo từ khóa "@Html.Raw(ViewBag.currentFilter)"</td>
+                </tr>
+            }
+
+        </table>
+    </div>
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, currentFilter = ViewBag.CurrentFilter }))
+</div>
+
+@section scripts {
+    @if (!string.IsNullOrEmpty(ViewBag.SuccessMessage))
+    {
+        <script>
+        showSuccessCreate('cập nhật', '@ViewBag.SuccessMessage');
+        </script>
+    }
+    <script>
+        function showDelete1(e, str) {
+            e.preventDefault();
+            var deleteUrl = $("#delete-link").attr("href");
+            swal({
+                title: "Xác nhận xóa ?",
+                text: `Bạn chắc chắn muốn xóa ${str} không ?`,
+                icon: "warning",
+                buttons: {
+                    cancel: {
+                        text: "Không",
+                        value: null,
+                        visible: true,
+                        className: "",
+                        closeModal: true,
+                    },
+                    confirm: {
+                        text: "Có",
+                        value: true,
+                        visible: true,
+                        className: "",
+                        closeModal: true
+                    }
+                }
+            }).then((willDelete) => {
+                if (willDelete) {
+                    window.location.href = deleteUrl;
+                }
+            });
+        }
+    </script>
+}

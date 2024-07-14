@@ -1,0 +1,138 @@
+﻿@model WebQLyNongSan.Models.UserTable
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="main-form">
+    <form action="~/Admin/User/Edit/@Model.ID" method="post" class="form js-form animate" id="form-1" enctype="multipart/form-data">
+        <div class="modal-comback">
+            <a href="~/Admin/User/Index"> <i class="fa-solid fa-arrow-left"></i> Quay lại</a>
+        </div>
+        <h3 class="heading">Chỉnh sửa tài khoản</h3>
+
+        <div class="spacer"></div>
+
+        <div class="form-group">
+            <label for="UserName" class="form-label">Tên người dùng</label>
+            <input id="UserName" name="UserName" value="@Model.UserName" type="text" placeholder="VD: Trung" class="form-control">
+            <span class="form-message"><label class="error" for="UserName"></label></span>
+        </div>
+
+        <div class="form-group">
+            <label for="PassWord" class="form-label">Mật khẩu</label>
+            <input id="PassWord" name="PassWord" value="@Model.PassWord" type="text" placeholder="VD: 123" class="form-control">
+            <span class="form-message"><label class="error" for="PassWord"></label></span>
+        </div>
+
+        <div class="form-group">
+            <label for="avatar" class="form-label">Hình ảnh</label>
+            <img src="~/Areas/Admin/Image/@Model.avatar" style="margin: 1rem; height: auto; width: 20rem" id="imagePreview" alt="Alternate Text" />
+            <input id="avatar" value="@Model.avatar" name="avatar" type="file" class="form-control" accept="image/jpeg, image/png" onchange="showImagePreview(this, document.getElementById('imagePreview'))">
+            <span class="form-message"><label class="error" for="avatar"></label></span>
+        </div>
+
+        <div class="form-group">
+            <label for="FullName" class="form-label">Quyền</label>
+            <select id="RoleID" name="RoleID">
+                @foreach (var item in new WebQLyNongSan.Models.QLyNongSanEntities2().Roles.ToList())
+                {
+                    <option value="@item.id" @Html.Raw(item.id == Model.RoleID ? "selected" : "")>@item.Name</option>
+                }
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="FullName" class="form-label">Họ và tên</label>
+            <input id="FullName" name="FullName" value="@Model.FullName" type="text" placeholder="VD: nong-san" class="form-control">
+            <span class="form-message"><label class="error" for="FullName"></label></span>
+        </div>
+
+        <div class="form-group">
+            <label for="Email" class="form-label">Email</label>
+            <input id="Email" name="Email" value="@Model.Email" type="text" placeholder="VD: nong-san" class="form-control">
+            <span class="form-message"><label class="error" for="Email"></label></span>
+        </div>
+
+        <div class="form-group">
+            <label for="Address" class="form-label">Địa chỉ</label>
+            <input id="Address" name="Address" value="@Model.Address" type="text" placeholder="VD: nong-san" class="form-control">
+            <span class="form-message"><label class="error" for="Address"></label></span>
+        </div>
+
+        <div class="form-group">
+            <label for="Phone" class="form-label">Số điện thoại</label>
+            <input id="Phone" name="Phone" value="@Model.Phone" type="text" placeholder="VD: nong-san" class="form-control">
+            <span class="form-message"><label class="error" for="Phone"></label></span>
+        </div>
+
+        <button type="submit" class="form-submit">Chỉnh sửa</button>
+    </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            
+            //Setting validation
+            $('#form-1').validate({
+                rules: {
+                    UserName: {
+                        required: true,
+                        minlength: 3
+                    },
+                    PassWord: {
+                        required: true,
+                        minlength: 3
+                    },
+                    FullName: {
+                        required: true,
+                        minlength: 3
+                    },
+                    Email: {
+                        required: true,
+                        email : true
+                        },
+                    Address: "required",
+                    Phone: {
+                        required: true,
+                        maxlength: 10,
+                        minlength: 10
+                        }
+                },
+                messages: {
+                    UserName: {
+                        required: "Bạn phải nhập tên người dùng",
+                        minlength: "Tên phải có độ dài tối thiểu 3 ký tự"
+                    },
+                    Address: "Bạn phải nhập địa chỉ",
+                    Phone: {
+                        required: "Bạn phải nhập số điện thoại",
+                        maxlength: "Số điện thoại có độ dài tối đa 10 ký tự",
+                        minlength: "Số điện thoại có độ dài là 10 ký tự"
+                    },
+                    Email: {
+                        required: "Bạn phải nhập email",
+                        email: "Bạn phải nhập đúng định dạng email",
+                        },
+                    PassWord: {
+                        required: "Bạn phải nhập mật khẩu người dùng",
+                        minlength: "Mật khẩu phải có độ dài tối thiểu 3 ký tự"
+                    },
+                    FullName: {
+                        required: "Bạn phải nhập họ và tên",
+                        minlength: "Họ và tên phải có độ dài tối thiểu 3 ký tự"
+                    },
+                }
+            });
+
+
+        });
+
+    </script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+}
+

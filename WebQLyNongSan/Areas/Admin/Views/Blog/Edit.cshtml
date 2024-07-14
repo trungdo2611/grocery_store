@@ -1,0 +1,73 @@
+﻿@model WebQLyNongSan.Models.Blog
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<div class="main-form">
+    <form action="~/Admin/Blog/Edit/@Model.id" method="post" class="form js-form animate" id="form-2" enctype="multipart/form-data">
+        <div class="modal-comback">
+            <a href="~/Admin/Blog/Index"> <i class="fa-solid fa-arrow-left"></i> Quay lại</a>
+        </div>
+        <h3 class="heading">Chỉnh sửa bài viết</h3>
+
+        <div class="spacer"></div>
+
+        <div class="form-group">
+            <label for="Title" class="form-label">Tên bài viết</label>
+            <input id="Title" value="@Model.Title" name="Title" type="text" placeholder="VD: chuối" class="form-control">
+            <span class="form-message"><label class="error" for="Title"></label></span>
+        </div>
+
+        <div class="form-group">
+            <label for="Picture" class="form-label">Hình ảnh</label>
+            <img src="~/Areas/Admin/Image/@Model.Picture" style="margin: 1rem; height: auto; width: 20rem" id="imagePreview" alt="Alternate Text" />
+            <input id="Picture" value="@Model.Picture" name="Picture" type="file" class="form-control" data-val="true" accept="image/jpeg, image/png" onchange="showImagePreview(this, document.getElementById('imagePreview'))">
+            <span class="form-message"><label class="error" for="Picture"></label></span>
+        </div>
+
+        <div class="form-group">
+            <label for="Content" class="form-label">Nội dung</label>
+            <textarea id="Content" name="Content" type="text" placeholder="VD: Thực phẩm..." class="form-control">@Model.Content</textarea>
+            <span class="form-message"><label class="error" for="Content"></label></span>
+        </div>
+
+        <button type="submit" id="addCategoryButton" class="form-submit">Chỉnh sửa</button>
+    </form>
+</div>
+
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+
+            //Setting validation
+            $('#form-2').validate({
+                rules: {
+                    Title: {
+                        required: true,
+                        minlength: 3
+                    },
+                   
+                    Content: {
+                        required: true,
+                        minlength: 10
+                    },
+                },
+                messages: {
+                    Title: {
+                        required: "Bạn phải nhập tiêu đề bài viết",
+                        minlength: "Tiêu đề bài viết phải có độ dài tối thiểu 3 ký tự"
+                    },
+                    Content: {
+                        required: "Bạn phải nhập nội dung bài viết",
+                        minlength: "Nội dung bài viết phải có độ dài tối thiểu 10 ký tự"
+                    },
+                }
+            });
+
+        });     
+    </script>
+
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+}
